@@ -1,0 +1,40 @@
+name: billtill
+description: Bill Till - Smart Billing for Sri Lanka
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  url_launcher: ^6.1.0
+  google_fonts: ^6.3.2
+  scrollable_positioned_list: ^0.3.8
+  visibility_detector: ^0.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/footer/logo.png
+    - assets/images/hero/hero1.jpeg
+    - assets/images/hero/hero2.jpeg
+    - assets/images/hero/hero3.jpeg
+    - assets/images/hero/logo.png
+    - assets/images/hero/title.png
+    - assets/images/product/Product1.jpeg
+    - assets/images/product/Product2.jpeg
+    - assets/images/product/Product3.jpeg
+    - assets/images/services/service1.jpg
+    - assets/images/services/service2.jpg
+    - assets/images/services/service3.jpg
+    - assets/images/services/service4.jpg
