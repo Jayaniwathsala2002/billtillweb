@@ -6,7 +6,7 @@ import 'dart:async';
 class HomeSection extends StatefulWidget {
   final bool isMobile;
   final VoidCallback onInvoiceTap;
-  final VoidCallback onViewPricingTap;
+  final VoidCallback onViewPricingTap; // ✅ This will scroll to Pricing
 
   const HomeSection({
     Key? key,
@@ -123,7 +123,7 @@ class _HomeSectionState extends State<HomeSection> {
                 ),
                 const SizedBox(height: 50),
                 ElevatedButton(
-                  onPressed: widget.onViewPricingTap,
+                  onPressed: widget.onViewPricingTap, // ✅ Scrolls to Pricing
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     foregroundColor: Colors.white,
@@ -176,7 +176,7 @@ class _HomeSectionState extends State<HomeSection> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.6),
+                          color: Colors.white,
                           width: 1,
                         ),
                         color: index == _currentSlide

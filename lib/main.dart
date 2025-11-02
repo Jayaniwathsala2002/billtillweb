@@ -1,3 +1,4 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'sections/home_section.dart';
@@ -18,10 +19,9 @@ class BillTillWeb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_const_constructors
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: HomePage(),
     );
   }
 }
@@ -30,23 +30,51 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   final ItemScrollController _scrollController = ItemScrollController();
-  int _activeIndex = 0; // ← Add this
+  final ItemPositionsListener _positionsListener =
+      ItemPositionsListener.create();
+  int _activeIndex = 0;
 
   void scrollTo(int index) {
-    setState(() {
-      _activeIndex = index; // ← Track active section
-    });
+    setState(() => _activeIndex = index);
     _scrollController.scrollTo(
       index: index,
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _positionsListener.itemPositions.addListener(_updateActiveIndex);
+  }
+
+  @override
+  void dispose() {
+    _positionsListener.itemPositions.removeListener(_updateActiveIndex);
+    super.dispose();
+  }
+
+  void _updateActiveIndex() {
+    final positions = _positionsListener.itemPositions.value;
+    if (positions.isEmpty) return;
+
+    final first = positions.firstWhere(
+      (pos) => pos.itemLeadingEdge >= 0,
+      orElse: () => positions.firstWhere(
+        (pos) => pos.itemTrailingEdge > 0,
+        orElse: () => positions.first,
+      ),
+    );
+
+    if (first.index != _activeIndex) {
+      setState(() => _activeIndex = first.index);
+    }
   }
 
   @override
@@ -58,19 +86,15 @@ class _HomePageState extends State<HomePage> {
         children: [
           ScrollablePositionedList.builder(
             itemScrollController: _scrollController,
+            itemPositionsListener: _positionsListener,
             itemCount: 7,
             itemBuilder: (context, index) {
               switch (index) {
-                // Inside itemBuilder
                 case 0:
                   return HomeSection(
                     isMobile: isMobile,
-                    onInvoiceTap: () {
-                      // Open web invoice generator
-                    },
-                    onViewPricingTap: () {
-                      // Scroll to pricing section
-                    },
+                    onInvoiceTap: () {},
+                    onViewPricingTap: () => scrollTo(2),
                   );
                 case 1:
                   return const FeaturesSection();
@@ -95,7 +119,7 @@ class _HomePageState extends State<HomePage> {
             right: 0,
             child: Navbar(
               onItemSelected: scrollTo,
-              activeIndex: _activeIndex, // ← Pass active index
+              activeIndex: _activeIndex,
             ),
           ),
         ],

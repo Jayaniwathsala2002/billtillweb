@@ -45,7 +45,6 @@ class _NavbarState extends State<Navbar> {
           ),
           child: LayoutBuilder(
             builder: (context, constraints) {
-              // Desktop layout
               if (constraints.maxWidth >= 992) {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,7 +74,7 @@ class _NavbarState extends State<Navbar> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // Open invoice generator (desktop)
+                        // Open invoice generator
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF43B9FE),
@@ -89,13 +88,14 @@ class _NavbarState extends State<Navbar> {
                         ),
                         elevation: 0,
                       ),
-                      child: Text('FREE INVOICE GENERATOR', style: buttonTextStyle),
+                      child: Text(
+                        'FREE INVOICE GENERATOR',
+                        style: buttonTextStyle,
+                      ),
                     ),
                   ],
                 );
-              }
-              // Mobile layout: hamburger/close in navbar
-              else {
+              } else {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -106,9 +106,12 @@ class _NavbarState extends State<Navbar> {
                     ),
                     IconButton(
                       icon: _isMenuOpen
-                          ? const Icon(Icons.close, color: Colors.white, size: 32)
-                          : const Icon(Icons.menu, color: Colors.white, size: 32),
-                      onPressed: () => setState(() => _isMenuOpen = !_isMenuOpen),
+                          ? const Icon(Icons.close,
+                              color: Colors.white, size: 32)
+                          : const Icon(Icons.menu,
+                              color: Colors.white, size: 32),
+                      onPressed: () =>
+                          setState(() => _isMenuOpen = !_isMenuOpen),
                     ),
                   ],
                 );
@@ -128,18 +131,20 @@ class _NavbarState extends State<Navbar> {
             ),
           ),
 
-        // Mobile full-screen menu (NO close button inside)
+        // ✅ FIXED: Mobile menu with safe height & scroll
         if (_isMenuOpen && isMobile)
           Align(
             alignment: Alignment.topCenter,
-            child: Container(
-              margin: EdgeInsets.only(top: 80),
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.8,
-              decoration: const BoxDecoration(
-                color: Color(0xFF0B0655),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height -
+                  80 - // space for navbar
+                  MediaQuery.of(context)
+                      .padding
+                      .top, // status bar (on mobile/web)
+              child: Container(
+                color: const Color(0xFF0B0655),
+                child: _buildMobileMenu(navItemStyle, context),
               ),
-              child: _buildMobileMenu(navItemStyle),
             ),
           ),
       ],
@@ -151,7 +156,10 @@ class _NavbarState extends State<Navbar> {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: () => widget.onItemSelected(index),
+        onTap: () {
+          widget.onItemSelected(index);
+          if (mounted) setState(() {});
+        },
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -175,7 +183,8 @@ class _NavbarState extends State<Navbar> {
     );
   }
 
-  Widget _buildMobileMenu(TextStyle baseStyle) {
+  // ✅ Accept context to read viewport size
+  Widget _buildMobileMenu(TextStyle baseStyle, BuildContext context) {
     final labels = [
       'Home',
       'Features',
@@ -186,14 +195,20 @@ class _NavbarState extends State<Navbar> {
       'Contact'
     ];
 
+    // Detect very small viewports (e.g., laptop window < 650px tall)
+    final isVerySmall = MediaQuery.of(context).size.height < 650;
+
     return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 24, right: 24),
+      padding: EdgeInsets.only(
+        top: isVerySmall ? 12 : 20,
+        left: 24,
+        right: 24,
+        bottom: isVerySmall ? 20 : 40,
+      ),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ❌ Removed close button from here
-
             ...List.generate(labels.length, (index) {
               final isActive = widget.activeIndex == index;
               return Column(
@@ -204,33 +219,31 @@ class _NavbarState extends State<Navbar> {
                       widget.onItemSelected(index);
                     },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: EdgeInsets.symmetric(
+                        vertical: isVerySmall ? 12 : 16,
+                      ),
                       child: Text(
                         labels[index],
                         style: baseStyle.copyWith(
-                          fontSize: 18,
-                          color: isActive ? const Color(0xFF43B9FE) : Colors.white,
-                          fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                          fontSize: isVerySmall ? 16 : 18,
+                          color:
+                              isActive ? const Color(0xFF43B9FE) : Colors.white,
+                          fontWeight:
+                              isActive ? FontWeight.bold : FontWeight.w500,
                         ),
                       ),
                     ),
                   ),
-                  if (isActive)
-                    Container(
-                      height: 2,
-                      width: double.infinity,
-                      color: const Color(0xFF43B9FE),
-                    )
-                  else
-                    Container(
-                      height: 0.5,
-                      width: double.infinity,
-                      color: Colors.white.withAlpha((0.2 * 255).round()),
-                    ),
+                  Container(
+                    height: 2,
+                    width: double.infinity,
+                    color: isActive
+                        ? const Color(0xFF43B9FE)
+                        : Colors.white.withAlpha((0.2 * 255).round()),
+                  ),
                 ],
               );
             }),
-            const SizedBox(height: 40),
           ],
         ),
       ),
