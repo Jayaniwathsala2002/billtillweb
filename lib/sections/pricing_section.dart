@@ -1,4 +1,5 @@
 // lib/sections/pricing_section.dart
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,7 +13,6 @@ class PricingSection extends StatefulWidget {
 
 class _PricingSectionState extends State<PricingSection> {
   Future<void> _launchURL(String urlString) async {
-    // Remove extra spaces
     final cleanUrl = urlString.trim();
     final uri = Uri.tryParse(cleanUrl);
     if (uri == null) return;
@@ -24,10 +24,6 @@ class _PricingSectionState extends State<PricingSection> {
         SnackBar(content: Text('Could not open $cleanUrl')),
       );
     }
-  }
-
-  void _showBillingHelp() {
-    _launchURL('https://support.yourapp.com/billing');
   }
 
   @override
@@ -43,143 +39,126 @@ class _PricingSectionState extends State<PricingSection> {
           // === PRICING PLANS SECTION ===
           Container(
             padding: EdgeInsets.symmetric(
-              vertical: isMobile ? 40 : 80,
+              vertical: isMobile ? 32 : 60,
               horizontal: isMobile ? 16 : 20,
             ),
             color: Colors.white,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Header
                 Text(
                   'Choose the plan that’s right for you',
                   style: GoogleFonts.poppins(
-                    fontSize: isMobile ? 28 : 36,
+                    fontSize: isMobile ? 26 : 32,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFF0B0655),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 Text(
                   'All plans include access to our core features. Upgrade for advanced tools.',
                   style: GoogleFonts.poppins(
-                    fontSize: isMobile ? 16 : 18,
+                    fontSize: isMobile ? 14 : 16,
                     color: Colors.grey.shade700,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 32),
 
                 // Plans
-                isMobile
-                    ? Column(
-                        children: [
-                          _PlanCard(
-                            title: 'Plus',
-                            price: '\$20',
-                            period: 'USD / month',
-                            description:
-                                'Level up productivity and creativity with expanded access',
-                            features: [
-                              'Everything in Free',
-                              'Extended limits on messaging, file uploads, advanced data analysis, and image generation',
-                              'Access to advanced voice and video inputs',
-                              'Limited access to o1 and o1-mini',
-                              'Opportunities to test new features',
-                              'Create and use projects and custom GPTs',
-                              'Limited access to Sora video generation',
-                            ],
-                            isCurrent: true,
-                            buttonText: 'Your current plan',
-                            buttonColor: Colors.grey.shade200,
-                            textColor: Colors.black,
-                            onButtonPressed: () {},
-                            isMobile: isMobile,
-                          ),
-                          const SizedBox(height: 30),
-                          _PlanCard(
-                            title: 'Pro',
-                            price: '\$200',
-                            period: 'USD / month',
-                            description:
-                                'Get the best of OpenAI with the highest level of access',
-                            features: [
-                              'Everything in Plus',
-                              'Unlimited access to o1, o1-mini, GPT-4o, and advanced voice (audio only)',
-                              'Higher limits for video and screensharing in advanced voice',
-                              'Access to o1 pro mode, which uses more compute for the best answers to the hardest questions',
-                              'Extended access to Sora video generation',
-                            ],
-                            isCurrent: false,
-                            buttonText: 'Get Pro',
-                            buttonColor: const Color(0xFF0B0655),
-                            textColor: Colors.white,
-                            onButtonPressed: () {
-                              _launchURL(
-                                  'https://payhere.lk/billtill/pro_monthly');
-                            },
-                            isMobile: isMobile,
-                          ),
+                if (isMobile)
+                  Column(
+                    children: [
+                      _PlanCard(
+                        title: 'Plus',
+                        price: '\$20',
+                        period: 'USD / month',
+                        description: 'Expanded access for growing businesses',
+                        features: [
+                          'Everything in Free',
+                          'Extended messaging & file uploads',
+                          'Advanced data analysis',
+                          'Limited o1 & o1-mini access',
+                          'Create custom GPTs',
                         ],
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: _PlanCard(
-                              title: 'Plus',
-                              price: '\$20',
-                              period: 'USD / month',
-                              description:
-                                  'Level up productivity and creativity with expanded access',
-                              features: [
-                                'Everything in Free',
-                                'Extended limits on messaging, file uploads, advanced data analysis, and image generation',
-                                'Access to advanced voice and video inputs',
-                                'Limited access to o1 and o1-mini',
-                                'Opportunities to test new features',
-                                'Create and use projects and custom GPTs',
-                                'Limited access to Sora video generation',
-                              ],
-                              isCurrent: true,
-                              buttonText: 'Your current plan',
-                              buttonColor: Colors.grey.shade200,
-                              textColor: Colors.black,
-                              onButtonPressed: () {},
-                              isMobile: isMobile,
-                            ),
-                          ),
-                          const SizedBox(width: 30),
-                          Expanded(
-                            child: _PlanCard(
-                              title: 'Pro',
-                              price: '\$200',
-                              period: 'USD / month',
-                              description:
-                                  'Get the best of OpenAI with the highest level of access',
-                              features: [
-                                'Everything in Plus',
-                                'Unlimited access to o1, o1-mini, GPT-4o, and advanced voice (audio only)',
-                                'Higher limits for video and screensharing in advanced voice',
-                                'Access to o1 pro mode, which uses more compute for the best answers to the hardest questions',
-                                'Extended access to Sora video generation',
-                              ],
-                              isCurrent: false,
-                              buttonText: 'Get Pro',
-                              buttonColor: const Color(0xFF0B0655),
-                              textColor: Colors.white,
-                              onButtonPressed: () {
-                                _launchURL(
-                                    'https://payhere.lk/billtill/pro_monthly');
-                              },
-                              isMobile: isMobile,
-                            ),
-                          ),
-                        ],
+                        isCurrent: true,
+                        buttonText: 'Your current plan',
+                        buttonColor: Colors.grey.shade200,
+                        textColor: Colors.black,
+                        onButtonPressed: () {},
+                        isMobile: isMobile,
                       ),
-
-                // Footer Links
-                const SizedBox(height: 60),
+                      const SizedBox(height: 20),
+                      _PlanCard(
+                        title: 'Pro',
+                        price: '\$200',
+                        period: 'USD / month',
+                        description: 'Full access for power users',
+                        features: [
+                          'Everything in Plus',
+                          'Unlimited o1, GPT-4o, advanced voice',
+                          'Higher video/screenshare limits',
+                          'o1 pro mode',
+                          'Extended Sora access',
+                        ],
+                        isCurrent: false,
+                        buttonText: 'Get Pro',
+                        buttonColor: const Color(0xFF0B0655),
+                        textColor: Colors.white,
+                        onButtonPressed: () {
+                          _launchURL('https://payhere.lk/billtill/pro_monthly');
+                        },
+                        isMobile: isMobile,
+                      ),
+                    ],
+                  )
+                else
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _PlanCard(
+                        title: 'Plus',
+                        price: '\$20',
+                        period: 'USD / month',
+                        description: 'Expanded access for growing businesses',
+                        features: [
+                          'Everything in Free',
+                          'Extended messaging & file uploads',
+                          'Advanced data analysis',
+                          'Limited o1 & o1-mini access',
+                          'Create custom GPTs',
+                        ],
+                        isCurrent: true,
+                        buttonText: 'Your current plan',
+                        buttonColor: Colors.grey.shade200,
+                        textColor: Colors.black,
+                        onButtonPressed: () {},
+                        isMobile: isMobile,
+                      ),
+                      const SizedBox(width: 24),
+                      _PlanCard(
+                        title: 'Pro',
+                        price: '\$200',
+                        period: 'USD / month',
+                        description: 'Full access for power users',
+                        features: [
+                          'Everything in Plus',
+                          'Unlimited o1, GPT-4o, advanced voice',
+                          'Higher video/screenshare limits',
+                          'o1 pro mode',
+                          'Extended Sora access',
+                        ],
+                        isCurrent: false,
+                        buttonText: 'Get Pro',
+                        buttonColor: const Color(0xFF0B0655),
+                        textColor: Colors.white,
+                        onButtonPressed: () {
+                          _launchURL('https://payhere.lk/billtill/pro_monthly');
+                        },
+                        isMobile: isMobile,
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
@@ -187,7 +166,7 @@ class _PricingSectionState extends State<PricingSection> {
           // === HARDWARE & ADD-ONS SECTION ===
           Container(
             padding: EdgeInsets.symmetric(
-              vertical: isMobile ? 60 : 80,
+              vertical: isMobile ? 40 : 50,
               horizontal: isMobile ? 16 : 20,
             ),
             color: Colors.grey.shade50,
@@ -196,40 +175,38 @@ class _PricingSectionState extends State<PricingSection> {
                 Text(
                   'Hardware & Add-ons',
                   style: GoogleFonts.poppins(
-                    fontSize: isMobile ? 24 : (isTablet ? 28 : 32),
+                    fontSize: isMobile ? 22 : 28,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFF0B0655),
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 24),
                 Wrap(
-                  spacing: isMobile ? 16 : 30,
-                  runSpacing: isMobile ? 16 : 30,
+                  spacing: isMobile ? 12 : 20,
+                  runSpacing: isMobile ? 12 : 20,
                   alignment: WrapAlignment.center,
                   children: [
                     _AddonCard(
                       title: 'Thermal Printer',
-                      description:
-                          '58mm thermal receipt printer with USB connectivity',
+                      description: '58mm USB receipt printer',
                       icon: Icons.print,
                       isMobile: isMobile,
                     ),
                     _AddonCard(
                       title: 'Barcode Scanner',
-                      description:
-                          'USB barcode scanner for quick product lookup',
+                      description: 'USB scanner for quick lookup',
                       icon: Icons.qr_code_scanner,
                       isMobile: isMobile,
                     ),
                     _AddonCard(
                       title: 'Cash Drawer',
-                      description: 'Secure cash drawer with printer trigger',
+                      description: 'Printer-triggered secure drawer',
                       icon: Icons.account_balance_wallet,
                       isMobile: isMobile,
                     ),
                     _AddonCard(
                       title: 'Training Session',
-                      description: '2-hour personalized training for your team',
+                      description: '2-hour team training',
                       icon: Icons.school,
                       isMobile: isMobile,
                     ),
@@ -242,7 +219,7 @@ class _PricingSectionState extends State<PricingSection> {
           // === SECURE PAYMENT GATEWAY SECTION ===
           Container(
             padding: EdgeInsets.symmetric(
-              vertical: isMobile ? 60 : 80,
+              vertical: isMobile ? 40 : 50,
               horizontal: isMobile ? 16 : 20,
             ),
             color: Colors.white,
@@ -251,48 +228,49 @@ class _PricingSectionState extends State<PricingSection> {
                 Text(
                   'Secure Payment Gateway',
                   style: GoogleFonts.poppins(
-                    fontSize: isMobile ? 22 : (isTablet ? 24 : 28),
+                    fontSize: isMobile ? 20 : 24,
                     fontWeight: FontWeight.bold,
                     color: const Color(0xFF0B0655).withOpacity(0.827),
                   ),
                 ),
-                const SizedBox(height: 30),
-                isMobile
-                    ? Column(
-                        children: [
-                          _PaymentPartner(
-                            name: 'Seylan Bank',
-                            description: 'Card payments & installments',
-                            icon: Icons.credit_card,
-                            isMobile: isMobile,
-                          ),
-                          const SizedBox(height: 30),
-                          _PaymentPartner(
-                            name: 'PayHere',
-                            description: 'Online payments & subscriptions',
-                            icon: Icons.payment,
-                            isMobile: isMobile,
-                          ),
-                        ],
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _PaymentPartner(
-                            name: 'Seylan Bank',
-                            description: 'Card payments & installments',
-                            icon: Icons.credit_card,
-                            isMobile: isMobile,
-                          ),
-                          SizedBox(width: isTablet ? 30 : 60),
-                          _PaymentPartner(
-                            name: 'PayHere',
-                            description: 'Online payments & subscriptions',
-                            icon: Icons.payment,
-                            isMobile: isMobile,
-                          ),
-                        ],
+                const SizedBox(height: 24),
+                if (isMobile)
+                  Column(
+                    children: [
+                      _PaymentPartner(
+                        name: 'Seylan Bank',
+                        description: 'Cards & installments',
+                        icon: Icons.credit_card,
+                        isMobile: isMobile,
                       ),
+                      const SizedBox(height: 20),
+                      _PaymentPartner(
+                        name: 'PayHere',
+                        description: 'Online payments',
+                        icon: Icons.payment,
+                        isMobile: isMobile,
+                      ),
+                    ],
+                  )
+                else
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _PaymentPartner(
+                        name: 'Seylan Bank',
+                        description: 'Cards & installments',
+                        icon: Icons.credit_card,
+                        isMobile: isMobile,
+                      ),
+                      const SizedBox(width: 30),
+                      _PaymentPartner(
+                        name: 'PayHere',
+                        description: 'Online payments',
+                        icon: Icons.payment,
+                        isMobile: isMobile,
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
@@ -302,7 +280,7 @@ class _PricingSectionState extends State<PricingSection> {
   }
 }
 
-// ====== PLAN CARD (NEW STYLE) ======
+// ====== COMPACT PLAN CARD ======
 class _PlanCard extends StatelessWidget {
   final String title;
   final String price;
@@ -333,18 +311,17 @@ class _PlanCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: isMobile
-          ? const EdgeInsets.all(20)
-          : const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+      width: isMobile ? double.infinity : 280,
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: Colors.grey.shade200),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -354,18 +331,18 @@ class _PlanCard extends StatelessWidget {
           Text(
             title,
             style: GoogleFonts.poppins(
-              fontSize: isMobile ? 24 : 28,
+              fontSize: isMobile ? 20 : 24,
               fontWeight: FontWeight.bold,
               color: const Color(0xFF0B0655),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Row(
             children: [
               Text(
                 price,
                 style: GoogleFonts.poppins(
-                  fontSize: isMobile ? 32 : 40,
+                  fontSize: isMobile ? 28 : 32,
                   fontWeight: FontWeight.bold,
                   color: const Color(0xFF0B0655),
                 ),
@@ -374,43 +351,43 @@ class _PlanCard extends StatelessWidget {
               Text(
                 period,
                 style: TextStyle(
-                  fontSize: isMobile ? 12 : 14,
+                  fontSize: isMobile ? 11 : 12,
                   color: Colors.grey.shade600,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           Text(
             description,
             style: TextStyle(
-              fontSize: isMobile ? 14 : 16,
+              fontSize: isMobile ? 13 : 14,
               color: Colors.grey.shade700,
-              height: 1.4,
+              height: 1.3,
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: features.map((feature) {
               return Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
+                padding: const EdgeInsets.only(bottom: 6.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(
                       Icons.check_circle,
                       color: Colors.green.shade600,
-                      size: isMobile ? 16 : 18,
+                      size: isMobile ? 14 : 16,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 6),
                     Expanded(
                       child: Text(
                         feature,
                         style: TextStyle(
-                          fontSize: isMobile ? 13 : 15,
+                          fontSize: isMobile ? 12 : 13,
                           color: Colors.grey.shade700,
-                          height: 1.4,
+                          height: 1.3,
                         ),
                       ),
                     ),
@@ -419,7 +396,7 @@ class _PlanCard extends StatelessWidget {
               );
             }).toList(),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -427,15 +404,16 @@ class _PlanCard extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: buttonColor,
                 foregroundColor: textColor,
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
+                elevation: 0,
               ),
               child: Text(
                 buttonText,
                 style: TextStyle(
-                  fontSize: isMobile ? 14 : 16,
+                  fontSize: isMobile ? 13 : 14,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -443,11 +421,11 @@ class _PlanCard extends StatelessWidget {
           ),
           if (isCurrent)
             Padding(
-              padding: const EdgeInsets.only(top: 12),
+              padding: const EdgeInsets.only(top: 8),
               child: Text(
                 'Your current plan',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 11,
                   color: Colors.blue.shade600,
                   fontWeight: FontWeight.w500,
                 ),
@@ -459,7 +437,7 @@ class _PlanCard extends StatelessWidget {
   }
 }
 
-// ====== ADDON CARD (FROM ORIGINAL) ======
+// ====== COMPACT ADDON CARD ======
 class _AddonCard extends StatefulWidget {
   final String title;
   final String description;
@@ -486,23 +464,20 @@ class _AddonCardState extends State<_AddonCard> {
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        width: widget.isMobile ? double.infinity : 250,
-        padding: widget.isMobile
-            ? const EdgeInsets.all(16)
-            : const EdgeInsets.all(20),
+        duration: const Duration(milliseconds: 200),
+        width: widget.isMobile ? double.infinity : 200,
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 253, 242, 255),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade300),
+          border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
               color: _isHovered
-                  ? Colors.black.withOpacity(0.2)
-                  : Colors.grey.withOpacity(0.1),
-              blurRadius: _isHovered ? 15 : 10,
-              offset: _isHovered ? const Offset(0, 8) : const Offset(0, 5),
-              spreadRadius: _isHovered ? 1 : 0,
+                  ? Colors.black.withOpacity(0.1)
+                  : Colors.transparent,
+              blurRadius: 8,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
@@ -511,25 +486,27 @@ class _AddonCardState extends State<_AddonCard> {
           children: [
             Icon(
               widget.icon,
-              size: widget.isMobile ? 40 : 48,
-              color: Colors.blue.shade600,
+              size: widget.isMobile ? 32 : 36,
+              color: const Color(0xFF0B0655),
             ),
-            SizedBox(height: widget.isMobile ? 12 : 16),
+            const SizedBox(height: 8),
             Text(
               widget.title,
               style: GoogleFonts.poppins(
-                fontSize: widget.isMobile ? 18 : 20,
+                fontSize: widget.isMobile ? 16 : 17,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF0B0655).withOpacity(0.827),
+                color: const Color(0xFF0B0655),
               ),
+              textAlign: TextAlign.center,
             ),
-            SizedBox(height: widget.isMobile ? 8 : 12),
+            const SizedBox(height: 6),
             Text(
               widget.description,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey.shade600,
-                fontSize: widget.isMobile ? 14 : 16,
+                fontSize: widget.isMobile ? 12 : 13,
+                height: 1.3,
               ),
             ),
           ],
@@ -539,7 +516,7 @@ class _AddonCardState extends State<_AddonCard> {
   }
 }
 
-// ====== PAYMENT PARTNER (FROM ORIGINAL) ======
+// ====== COMPACT PAYMENT PARTNER ======
 class _PaymentPartner extends StatefulWidget {
   final String name;
   final String description;
@@ -559,7 +536,7 @@ class _PaymentPartner extends StatefulWidget {
 
 class _PaymentPartnerState extends State<_PaymentPartner> {
   bool _isHovered = false;
-  final Duration _animationDuration = const Duration(milliseconds: 300);
+  final Duration _animationDuration = const Duration(milliseconds: 200);
 
   @override
   Widget build(BuildContext context) {
@@ -568,107 +545,44 @@ class _PaymentPartnerState extends State<_PaymentPartner> {
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
         duration: _animationDuration,
-        curve: Curves.easeInOut,
-        padding: widget.isMobile
-            ? const EdgeInsets.all(16)
-            : const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: _isHovered
-              ? const Color(0xFF0B0655).withOpacity(0.1)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: _isHovered
-              ? [
-                  BoxShadow(
-                    color: const Color(0xFF0B0655).withOpacity(0.2),
-                    blurRadius: 15,
-                    spreadRadius: 2,
-                    offset: const Offset(0, 5),
-                  ),
-                ]
-              : [],
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.grey.shade200),
+          boxShadow: [
+            BoxShadow(
+              color: _isHovered
+                  ? Colors.black.withOpacity(0.08)
+                  : Colors.transparent,
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            AnimatedContainer(
-              duration: _animationDuration,
-              curve: Curves.easeInOut,
-              width: _isHovered
-                  ? (widget.isMobile ? 70 : 90)
-                  : (widget.isMobile ? 60 : 80),
-              height: _isHovered
-                  ? (widget.isMobile ? 70 : 90)
-                  : (widget.isMobile ? 60 : 80),
-              decoration: BoxDecoration(
-                color: _isHovered
-                    ? const Color(0xFF0B0655).withOpacity(0.1)
-                    : Colors.white,
-                borderRadius: BorderRadius.circular(45),
-                border: Border.all(
-                  color: _isHovered
-                      ? const Color(0xFF0B0655).withOpacity(0.827)
-                      : const Color(0xFF0B0655).withOpacity(0.3),
-                  width: _isHovered ? 2 : 1,
-                ),
-              ),
-              child: AnimatedScale(
-                duration: _animationDuration,
-                scale: _isHovered ? 1.1 : 1.0,
-                child: Icon(
-                  widget.icon,
-                  size: widget.isMobile ? 30 : 40,
-                  color: _isHovered
-                      ? const Color(0xFF0B0655).withOpacity(0.827)
-                      : const Color(0xFF0B0655).withOpacity(0.7),
-                ),
-              ),
+            Icon(
+              widget.icon,
+              size: widget.isMobile ? 28 : 32,
+              color: const Color(0xFF0B0655),
             ),
-            SizedBox(height: widget.isMobile ? 12 : 16),
-            AnimatedDefaultTextStyle(
-              duration: _animationDuration,
+            const SizedBox(height: 10),
+            Text(
+              widget.name,
               style: GoogleFonts.poppins(
-                fontSize: _isHovered
-                    ? (widget.isMobile ? 18 : 22)
-                    : (widget.isMobile ? 16 : 20),
+                fontSize: widget.isMobile ? 16 : 18,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF0B0655).withOpacity(0.827),
+                color: const Color(0xFF0B0655),
               ),
-              child: Text(widget.name),
             ),
-            SizedBox(height: widget.isMobile ? 6 : 8),
-            AnimatedDefaultTextStyle(
-              duration: _animationDuration,
+            const SizedBox(height: 4),
+            Text(
+              widget.description,
               style: TextStyle(
-                fontSize: _isHovered
-                    ? (widget.isMobile ? 13 : 15)
-                    : (widget.isMobile ? 12 : 14),
-                color: _isHovered
-                    ? const Color(0xFF0B0655).withOpacity(0.8)
-                    : const Color(0xFF0B0655).withOpacity(0.6),
-                fontWeight: _isHovered ? FontWeight.w500 : FontWeight.normal,
-              ),
-              child: Text(widget.description),
-            ),
-            SizedBox(height: widget.isMobile ? 8 : 10),
-            AnimatedOpacity(
-              duration: _animationDuration,
-              opacity: _isHovered ? 1.0 : 0.0,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF0B0655).withOpacity(0.827),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  'Click to pay',
-                  style: GoogleFonts.poppins(
-                    fontSize: widget.isMobile ? 10 : 12,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                fontSize: widget.isMobile ? 12 : 13,
+                color: Colors.grey.shade600,
               ),
             ),
           ],

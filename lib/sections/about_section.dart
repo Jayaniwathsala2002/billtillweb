@@ -1,336 +1,648 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// Bill Till Brand Color: #0B0655 → R:11, G:6, B:85
+Color billTillWithOpacity(double opacity) => Color.fromRGBO(11, 6, 85, opacity);
+
 class AboutSection extends StatelessWidget {
   const AboutSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'About Us',
-            style: GoogleFonts.poppins(
-              fontSize: 36,
-              fontWeight: FontWeight.bold,
-              color: const Color.fromRGBO(11, 6, 85, 0.827),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'Bill Till is a product of Ceylon Innovation Services (PVT) LTD',
-            style: GoogleFonts.poppins(
-              fontSize: 20,
-              color: Colors.grey.shade700,
-            ),
-          ),
-          const SizedBox(height: 40),
-          const Wrap(
-            spacing: 40,
-            runSpacing: 40,
-            alignment: WrapAlignment.center,
+    return Column(
+      children: [
+        // ===== About Us — No Background =====
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              _StyledHoverCompanyInfoCard(
-                icon: Icons.history,
-                title: 'Our Story',
-                description:
-                    'Founded to solve billing challenges faced by Sri Lankan businesses with innovative technology solutions.',
+              Text(
+                'About Us',
+                style: GoogleFonts.poppins(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: billTillWithOpacity(0.827),
+                ),
+                textAlign: TextAlign.center,
               ),
-              _StyledHoverCompanyInfoCard(
-                icon: Icons.flag,
-                title: 'Our Mission',
-                description:
-                    'Make smart billing accessible to every business in Sri Lanka, regardless of size or location.',
+              const SizedBox(height: 16),
+              Text(
+                'Bill Till is a product of Ceylon Innovation Services (PVT) LTD',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  color: Colors.grey.shade700,
+                ),
+                textAlign: TextAlign.center,
               ),
-              _StyledHoverCompanyInfoCard(
-                icon: Icons.people,
-                title: 'Our Culture',
-                description:
-                    'Innovation, reliability, and customer-first approach drive everything we do.',
+              const SizedBox(height: 32),
+              Wrap(
+                spacing: 32,
+                runSpacing: 32,
+                alignment: WrapAlignment.center,
+                children: const [
+                  _StyledHoverCompanyInfoCard(
+                    icon: Icons.history,
+                    title: 'Our Story',
+                    description:
+                        'Founded to solve billing challenges faced by Sri Lankan businesses with innovative technology solutions.',
+                  ),
+                  _StyledHoverCompanyInfoCard(
+                    icon: Icons.flag,
+                    title: 'Our Mission',
+                    description:
+                        'Make smart billing accessible to every business in Sri Lanka, regardless of size or location.',
+                  ),
+                  _StyledHoverCompanyInfoCard(
+                    icon: Icons.people,
+                    title: 'Our Culture',
+                    description:
+                        'Innovation, reliability, and customer-first approach drive everything we do.',
+                  ),
+                ],
               ),
             ],
           ),
+        ),
 
-          // === NEW: CEO Section Below (Properly Scaled Image) ===
-          const SizedBox(height: 60),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Container(
-                  constraints: const BoxConstraints(maxHeight: 300),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Image.asset(
+        // ===== Team Section =====
+        Container(color: Colors.white, child: _buildTeamSection(context)),
+
+        // ===== Values Section =====
+        _buildValuesSection(context),
+
+        // ===== Why Choose Bill Till? =====
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+          color: Colors.grey.shade50,
+          child: _buildWhyChooseSection(context),
+        ),
+      ],
+    );
+  }
+
+  static Widget _buildTeamSection(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 768;
+    if (isMobile) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+        child: Column(
+          children: [
+            SizedBox(
+              width: 280,
+              height: 400,
+              child: Image.asset(
+                'assets/images/58551266-cab8-4959-84be-ec305e53167d-removebg-preview.png',
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: Colors.grey.shade100,
+                  child: const Icon(Icons.person, size: 80, color: Colors.blue),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Shalitha De Soysa',
+              style: GoogleFonts.poppins(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: billTillWithOpacity(0.827),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Founder & CEO',
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                color: Colors.blue.shade700,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'BSC(HONS) in Computer Science, PG, CERT',
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: Colors.grey.shade600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Described by clients as extremely innovative, Shalitha is the driving force behind every bespoke IT solution we design and develop.',
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                color: Colors.grey.shade700,
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Our Team',
+              style: GoogleFonts.poppins(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: billTillWithOpacity(0.827),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'At Ceylon Innovation Services, we are more than just a service provider — we are your solution.',
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                color: Colors.blue.shade700,
+                fontWeight: FontWeight.w600,
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            _buildTeamMembersGrid(context),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 400,
+                  margin: const EdgeInsets.only(right: 40),
+                  child: Column(
+                    children: [
+                      Image.asset(
                         'assets/images/about/ceo.png',
-                        errorBuilder: (context, error, stackTrace) {
+                        width: 380,
+                        height: 650,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, trace) {
                           return Container(
-                            color: Colors.blue.shade50,
-                            child: const Center(
-                              child: Icon(Icons.person,
-                                  size: 60, color: Colors.blue),
+                            width: 380,
+                            height: 650,
+                            color: Colors.grey.shade100,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.person,
+                                    size: 80, color: Colors.blue),
+                                const SizedBox(height: 10),
+                                const Text('Image not found',
+                                    style: TextStyle(fontSize: 14)),
+                              ],
                             ),
                           );
                         },
                       ),
+                      const SizedBox(height: 24),
+                      Text(
+                        'Shalitha De Soysa',
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: billTillWithOpacity(0.827),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Founder & CEO',
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          color: Colors.blue.shade700,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'BSC(HONS) in Computer Science, PG, CERT',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          color: Colors.grey.shade600,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 40, top: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Described by clients as extremely innovative, Shalitha is the driving force behind every bespoke IT solution we design and develop.',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.grey.shade700,
+                            height: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Our Team',
+                          style: GoogleFonts.poppins(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: billTillWithOpacity(0.827),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'At Ceylon Innovation Services, we are more than just a service provider — we are your solution.',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.blue.shade700,
+                            fontWeight: FontWeight.w600,
+                            height: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        _buildTeamMembersGrid(context),
+                      ],
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 40),
-              // CEO Info & Team Members
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Described by clients as extremely innovative, Shalitha is the driving force behind every bespoke IT solution we design and develop.',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: Colors.grey.shade700,
-                        height: 1.6,
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    Text(
-                      'Our Team',
-                      style: GoogleFonts.poppins(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromRGBO(11, 6, 85, 0.827),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'At Ceylon Innovation Services, we are more than just a service provider — we are your solution.',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: Colors.blue.shade700,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    Text(
-                      'Meet Our Experts',
-                      style: GoogleFonts.poppins(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade800,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Team Members Row with Animation on Hover
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: List.generate(
-                        6,
-                        (index) => _AnimatedTeamMemberCard(
-                          name: _teamNames[index],
-                          role: _teamRoles[index],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    Text(
-                      'Shalitha De Soysa',
-                      style: GoogleFonts.poppins(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromRGBO(11, 6, 85, 0.827),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Founder & CEO',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: Colors.blue.shade700,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'BSC (HONS) in Computer Science, PG, CERT',
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
     );
   }
-}
 
-// --- Animated Team Member Card ---
-class _AnimatedTeamMemberCard extends StatefulWidget {
-  final String name;
-  final String role;
-
-  const _AnimatedTeamMemberCard({
-    Key? key,
-    required this.name,
-    required this.role,
-  }) : super(key: key);
-
-  @override
-  State<_AnimatedTeamMemberCard> createState() =>
-      _AnimatedTeamMemberCardState();
-}
-
-class _AnimatedTeamMemberCardState extends State<_AnimatedTeamMemberCard>
-    with SingleTickerProviderStateMixin {
-  bool _isHovered = false;
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _borderWidthAnimation;
-  late Animation<Color?> _borderColorAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.05).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
-    );
-    _borderWidthAnimation = Tween<double>(begin: 2.0, end: 3.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
-    _borderColorAnimation = ColorTween(
-      begin: Colors.blue.shade200,
-      end: Colors.blue.shade400,
-    ).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+  static Widget _buildTeamMembersGrid(BuildContext context) {
+    final teamMembers = [
+      TeamMember(
+          name: 'John Smith',
+          role: 'CTO',
+          description: 'Technology visionary',
+          imagePath: 'assets/images/team1.jpg'),
+      TeamMember(
+          name: 'Sarah Johnson',
+          role: 'Lead Developer',
+          description: 'Flutter expert',
+          imagePath: 'assets/images/team2.jpg'),
+      TeamMember(
+          name: 'Mike Williams',
+          role: 'UI/UX Designer',
+          description: 'Creative designer',
+          imagePath: 'assets/images/team3.jpg'),
+      TeamMember(
+          name: 'Emily Davis',
+          role: 'Project Manager',
+          description: 'Agile expert',
+          imagePath: 'assets/images/team4.jpg'),
+      TeamMember(
+          name: 'David Brown',
+          role: 'QA Engineer',
+          description: 'Quality assurance',
+          imagePath: 'assets/images/team5.jpg'),
+      TeamMember(
+          name: 'Lisa Wilson',
+          role: 'Business Analyst',
+          description: 'Bridging needs',
+          imagePath: 'assets/images/team6.jpg'),
+    ];
+    final itemWidth = MediaQuery.of(context).size.width < 600 ? 140.0 : 160.0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Meet Our Experts',
+          style: GoogleFonts.poppins(
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: billTillWithOpacity(0.827),
+          ),
+        ),
+        const SizedBox(height: 24),
+        Wrap(
+          spacing: 28,
+          runSpacing: 28,
+          children: teamMembers
+              .map((member) => SizedBox(
+                  width: itemWidth, child: TeamMemberCircle(member: member)))
+              .toList(),
+        ),
+      ],
     );
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  Widget _buildValuesSection(BuildContext context) {
+    const double cardSize = 280.0;
+    final isMobile = MediaQuery.of(context).size.width < 768;
+    final cards = [
+      _ValueCardData(
+          Icons.lightbulb_outline,
+          'Innovation',
+          'Constantly evolving to meet market needs',
+          BackgroundPosition.topLeft),
+      _ValueCardData(Icons.security, 'Reliability',
+          'Products you can depend on every day', BackgroundPosition.topRight),
+      _ValueCardData(Icons.people_alt, 'Customer First',
+          'Your success is our success', BackgroundPosition.bottomLeft),
+      _ValueCardData(Icons.auto_awesome, 'Simplicity',
+          'Making complex tasks simple', BackgroundPosition.bottomRight),
+    ];
+
+    if (isMobile) {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+        color: Colors.blue.shade50,
+        child: Column(
+          children: [
+            _sectionTitle('Our Values', 'What drives us forward'),
+            const SizedBox(height: 40),
+            for (var card in cards)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: _ValueCard(
+                  stepColor: Colors.blue.shade700,
+                  cornerColor: billTillWithOpacity(0.827),
+                  icon: card.icon,
+                  title: card.title,
+                  description: card.description,
+                  backgroundPosition: card.position,
+                  width: cardSize,
+                  height: cardSize,
+                ),
+              ),
+          ],
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+      color: Colors.blue.shade50,
+      child: Column(
+        children: [
+          _sectionTitle('Our Values', 'What drives us forward'),
+          const SizedBox(height: 40),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            _ValueCard(
+                stepColor: Colors.blue.shade700,
+                cornerColor: billTillWithOpacity(0.827),
+                icon: cards[0].icon,
+                title: cards[0].title,
+                description: cards[0].description,
+                backgroundPosition: cards[0].position,
+                width: cardSize,
+                height: cardSize),
+            const SizedBox(width: 32),
+            _ValueCard(
+                stepColor: Colors.blue.shade700,
+                cornerColor: billTillWithOpacity(0.827),
+                icon: cards[1].icon,
+                title: cards[1].title,
+                description: cards[1].description,
+                backgroundPosition: cards[1].position,
+                width: cardSize,
+                height: cardSize),
+          ]),
+          const SizedBox(height: 32),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            _ValueCard(
+                stepColor: Colors.blue.shade700,
+                cornerColor: billTillWithOpacity(0.827),
+                icon: cards[2].icon,
+                title: cards[2].title,
+                description: cards[2].description,
+                backgroundPosition: cards[2].position,
+                width: cardSize,
+                height: cardSize),
+            const SizedBox(width: 32),
+            _ValueCard(
+                stepColor: Colors.blue.shade700,
+                cornerColor: billTillWithOpacity(0.827),
+                icon: cards[3].icon,
+                title: cards[3].title,
+                description: cards[3].description,
+                backgroundPosition: cards[3].position,
+                width: cardSize,
+                height: cardSize),
+          ]),
+        ],
+      ),
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) {
-        setState(() => _isHovered = true);
-        _controller.forward();
-      },
-      onExit: (_) {
-        setState(() => _isHovered = false);
-        _controller.reverse();
-      },
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: Container(
-          width: 80,
-          margin: const EdgeInsets.only(bottom: 20),
+  static Widget _sectionTitle(String title, String subtitle) {
+    return Column(
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.poppins(
+              fontSize: 36,
+              fontWeight: FontWeight.bold,
+              color: billTillWithOpacity(0.827)),
+        ),
+        const SizedBox(height: 8),
+        Text(subtitle,
+            style:
+                GoogleFonts.poppins(fontSize: 18, color: Colors.grey.shade600)),
+      ],
+    );
+  }
+
+  Widget _buildWhyChooseSection(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isWide = screenWidth > 1000;
+    final isMobile = screenWidth < 768;
+
+    if (isWide) {
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(
+                flex: 1,
+                child: Container(
+                  padding: const EdgeInsets.only(right: 40, top: 50),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Why Choose\nBill Till?',
+                        style: GoogleFonts.poppins(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue.shade800,
+                            height: 1.2),
+                        textAlign: TextAlign.right,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(width: 70, height: 550, child: _buildVerticalLine()),
+              Flexible(
+                flex: 2,
+                child: Container(
+                  padding: const EdgeInsets.only(left: 40, top: 20),
+                  child: Column(
+                    children: List.generate(
+                      6,
+                      (i) => _EnhancedEmergingPointCard(
+                        text: [
+                          'Designed for Sri Lankan business with local compliance',
+                          'Works online and offline seamlessly',
+                          'Affordable for all business sizes',
+                          'Support in Sinhala, Tamil, and English',
+                          'Regular feature updates',
+                          'Minimal training required',
+                        ][i],
+                        index: i,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 32),
           child: Column(
             children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.blue.shade50,
-                  border: Border.all(
-                    color: _borderColorAnimation.value ?? Colors.blue.shade200,
-                    width: _borderWidthAnimation.value,
-                  ),
-                  boxShadow: _isHovered
-                      ? [
-                          BoxShadow(
-                            color: Colors.blue.shade300.withOpacity(0.4),
-                            blurRadius: 10,
-                            spreadRadius: 2,
-                          ),
-                        ]
-                      : null,
-                ),
-                child:
-                    Icon(Icons.person, color: Colors.blue.shade700, size: 32),
-              ),
-              const SizedBox(height: 12),
               Text(
-                widget.name,
+                'Why Choose Bill Till?',
                 style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey.shade800,
-                ),
+                    fontSize: isMobile ? 28 : 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue.shade800),
                 textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 4),
-              Text(
-                widget.role,
-                style: GoogleFonts.poppins(
-                  fontSize: 12,
-                  color: Colors.blue.shade700,
+              const SizedBox(height: 16),
+              SizedBox(
+                width: isMobile ? 280 : 300,
+                child: Text(
+                  'Experience the difference with our innovative billing solution for Sri Lankan businesses',
+                  style: GoogleFonts.poppins(
+                      fontSize: 16, color: Colors.grey.shade600, height: 1.5),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
         ),
-      ),
+        SizedBox(height: 70, child: _buildHorizontalLine()),
+        Container(
+          padding: const EdgeInsets.only(top: 20),
+          child: Column(
+            children: List.generate(
+              6,
+              (i) => _EnhancedEmergingPointCard(
+                text: [
+                  'For Sri Lankan businesses',
+                  'Online & offline ready',
+                  'Affordable plans',
+                  'Local language support',
+                  'Regular updates',
+                  'Easy to use',
+                ][i],
+                index: i,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Widget _buildVerticalLine() {
+    return Stack(
+      children: [
+        Positioned(
+            left: 30,
+            top: 0,
+            bottom: 0,
+            child: Container(width: 10, color: Colors.blue.shade600)),
+        Positioned(
+          left: 25,
+          top: 0,
+          bottom: 0,
+          child: Container(
+            width: 18,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                  colors: [Colors.blue, Colors.blueAccent]),
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.blue.shade900.withOpacity(0.5),
+                    blurRadius: 12)
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Widget _buildHorizontalLine() {
+    return Stack(
+      children: [
+        Positioned(
+            top: 30,
+            left: 0,
+            right: 0,
+            child: Container(height: 10, color: Colors.grey.withOpacity(0.2))),
+        Positioned(
+          top: 25,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: 18,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                  colors: [Colors.blue, Colors.blueAccent]),
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.blue.shade900.withOpacity(0.5),
+                    blurRadius: 12)
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
-// --- Dummy Data for Team Members ---
-const List<String> _teamNames = [
-  'John Smith',
-  'Sarah Johnson',
-  'Mike Williams',
-  'Emily Davis',
-  'David Brown',
-  'Lisa Wilson',
-];
+// =============== Reused Widgets ===============
 
-const List<String> _teamRoles = [
-  'CTO',
-  'Lead Developer',
-  'UI/UX Designer',
-  'Project Manager',
-  'QA Engineer',
-  'Business Analyst',
-];
-
-// --- Existing Styled Hover Card ---
 class _StyledHoverCompanyInfoCard extends StatefulWidget {
   final IconData icon;
   final String title;
   final String description;
-
-  const _StyledHoverCompanyInfoCard({
-    Key? key,
-    required this.icon,
-    required this.title,
-    required this.description,
-  }) : super(key: key);
+  const _StyledHoverCompanyInfoCard(
+      {required this.icon, required this.title, required this.description});
 
   @override
   State<_StyledHoverCompanyInfoCard> createState() =>
@@ -347,89 +659,71 @@ class _StyledHoverCompanyInfoCardState
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: Container(
-        width: 320,
-        height: 320,
+        width: 310,
+        height: 310,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: _isHovered ? Colors.blue.shade400 : Colors.grey.shade300,
-            width: _isHovered ? 2 : 1,
-          ),
+              color: _isHovered ? Colors.blue.shade400 : Colors.grey.shade300,
+              width: _isHovered ? 2 : 1),
           boxShadow: _isHovered
               ? [
                   BoxShadow(
-                    color: Colors.blue.shade300.withOpacity(0.4),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                  ),
+                      color: Colors.blue.shade200,
+                      blurRadius: 20,
+                      offset: const Offset(0, 6))
                 ]
               : [
-                  const BoxShadow(
-                    color: Color.fromRGBO(0, 0, 0, 0.2),
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.15),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4))
                 ],
         ),
         child: Column(
           children: [
             Container(
-              height: 160,
-              width: double.infinity,
+              height: 150,
               decoration: BoxDecoration(
-                color: Colors.blue.shade700,
+                color: const Color(0xFF0B0655),
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
               ),
               child: Stack(
                 alignment: Alignment.center,
                 children: [
                   Positioned(
-                    bottom: -25,
-                    child: SizedBox(
-                      height: 70,
+                    bottom: -22,
+                    child: Container(
+                      height: 60,
                       child: Stack(
                         alignment: Alignment.center,
-                        children: [
-                          const CustomPaint(
-                            size: Size(100, 70),
-                            painter:
-                                _ImageStylePentagonPainter(color: Colors.white),
-                          ),
+                        children: const [
                           CustomPaint(
-                            size: const Size(50, 50),
-                            painter: _ImageStylePentagonPainter(
-                                color: Colors.blue.shade700),
-                            child: SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Icon(
-                                widget.icon,
-                                size: 24,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
+                              size: Size(90, 60),
+                              painter: _ImageStylePentagonPainter(
+                                  color: Colors.white)),
+                          CustomPaint(
+                              size: Size(45, 45),
+                              painter: _ImageStylePentagonPainter(
+                                  color: Colors.white),
+                              child: Icon(Icons.lightbulb,
+                                  size: 22, color: Color(0xFF0B0655))),
                         ],
                       ),
                     ),
                   ),
                   Positioned(
-                    top: 40,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        widget.title,
-                        style: GoogleFonts.poppins(
-                          fontSize: 22,
+                    top: 35,
+                    child: Text(
+                      widget.title,
+                      style: GoogleFonts.poppins(
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+                          color: Colors.white),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ],
@@ -437,20 +731,12 @@ class _StyledHoverCompanyInfoCardState
             ),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.description,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        color: Colors.grey.shade700,
-                        height: 1.5,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                padding: const EdgeInsets.all(20),
+                child: Text(
+                  widget.description,
+                  style: GoogleFonts.poppins(
+                      fontSize: 14, color: Colors.grey.shade700, height: 1.4),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
@@ -467,22 +753,375 @@ class _ImageStylePentagonPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.fill;
-    final double width = size.width;
-    final double height = size.height;
-    final double centerX = width / 2;
-    final Path path = Path();
-    path.moveTo(centerX, 0);
-    path.lineTo(centerX - width * 0.4, height * 0.35);
-    path.lineTo(centerX - width * 0.3, height);
-    path.lineTo(centerX + width * 0.3, height);
-    path.lineTo(centerX + width * 0.4, height * 0.35);
-    path.close();
+    final paint = Paint()..color = color;
+    final w = size.width;
+    final h = size.height;
+    final cx = w / 2;
+    final path = Path()
+      ..moveTo(cx, 0)
+      ..lineTo(cx - w * 0.4, h * 0.35)
+      ..lineTo(cx - w * 0.3, h)
+      ..lineTo(cx + w * 0.3, h)
+      ..lineTo(cx + w * 0.4, h * 0.35)
+      ..close();
     canvas.drawPath(path, paint);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class TeamMember {
+  final String name, role, description, imagePath;
+  const TeamMember(
+      {required this.name,
+      required this.role,
+      required this.description,
+      required this.imagePath});
+}
+
+class TeamMemberCircle extends StatefulWidget {
+  final TeamMember member;
+  const TeamMemberCircle({super.key, required this.member});
+
+  @override
+  State<TeamMemberCircle> createState() => _TeamMemberCircleState();
+}
+
+class _TeamMemberCircleState extends State<TeamMemberCircle> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: Container(
+        width: 160,
+        margin: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          children: [
+            Container(
+              width: _isHovered ? 130 : 120,
+              height: _isHovered ? 130 : 120,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(75),
+                border: Border.all(
+                    color: _isHovered
+                        ? Colors.blue.shade400
+                        : Colors.blue.shade300,
+                    width: _isHovered ? 3 : 2),
+                boxShadow: _isHovered
+                    ? [
+                        BoxShadow(
+                            color: Colors.blue.shade200,
+                            blurRadius: 12,
+                            offset: const Offset(0, 4))
+                      ]
+                    : [
+                        BoxShadow(
+                            color: Colors.grey.withOpacity(0.15),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2))
+                      ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(75),
+                child: Image.asset(
+                  widget.member.imagePath,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, trace) => Container(
+                    color: Colors.grey.shade100,
+                    child:
+                        const Icon(Icons.person, size: 48, color: Colors.blue),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              widget.member.name,
+              style: GoogleFonts.poppins(
+                fontSize: _isHovered ? 16 : 15,
+                fontWeight: FontWeight.bold,
+                color: billTillWithOpacity(0.827),
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              widget.member.role,
+              style: GoogleFonts.poppins(
+                fontSize: _isHovered ? 14 : 13,
+                color: Colors.blue.shade700,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            if (_isHovered) ...[
+              const SizedBox(height: 6),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  widget.member.description,
+                  style: GoogleFonts.poppins(
+                      fontSize: 11, color: Colors.grey.shade600, height: 1.3),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+enum BackgroundPosition { topLeft, topRight, bottomLeft, bottomRight }
+
+class _ValueCardData {
+  final IconData icon;
+  final String title;
+  final String description;
+  final BackgroundPosition position;
+  const _ValueCardData(this.icon, this.title, this.description, this.position);
+}
+
+class _ValueCard extends StatelessWidget {
+  final Color stepColor;
+  final Color cornerColor;
+  final IconData icon;
+  final String title;
+  final String description;
+  final BackgroundPosition backgroundPosition;
+  final double width;
+  final double height;
+  const _ValueCard({
+    required this.stepColor,
+    required this.cornerColor,
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.backgroundPosition,
+    required this.width,
+    required this.height,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Stack(
+        children: [
+          _buildBackground(),
+          Container(
+            width: width - 20,
+            height: height - 20,
+            margin: _getMargin(),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2))
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 65,
+                    height: 65,
+                    decoration: BoxDecoration(
+                        color: cornerColor.withOpacity(0.1),
+                        shape: BoxShape.circle),
+                    child: Icon(icon, size: 32, color: cornerColor),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: billTillWithOpacity(0.827)),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    description,
+                    style: GoogleFonts.poppins(
+                        fontSize: 14, color: Colors.grey.shade600, height: 1.4),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBackground() {
+    switch (backgroundPosition) {
+      case BackgroundPosition.topLeft:
+        return Positioned(top: 0, left: 0, child: _bg());
+      case BackgroundPosition.topRight:
+        return Positioned(top: 0, right: 0, child: _bg());
+      case BackgroundPosition.bottomLeft:
+        return Positioned(bottom: 0, left: 0, child: _bg());
+      case BackgroundPosition.bottomRight:
+        return Positioned(bottom: 0, right: 0, child: _bg());
+    }
+  }
+
+  Widget _bg() => Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: cornerColor,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+                color: cornerColor.withOpacity(0.4),
+                blurRadius: 12,
+                offset: const Offset(0, 6))
+          ],
+        ),
+      );
+
+  EdgeInsets _getMargin() {
+    switch (backgroundPosition) {
+      case BackgroundPosition.topLeft:
+        return const EdgeInsets.only(top: 20, left: 20);
+      case BackgroundPosition.topRight:
+        return const EdgeInsets.only(top: 20, right: 20);
+      case BackgroundPosition.bottomLeft:
+        return const EdgeInsets.only(bottom: 20, left: 20);
+      case BackgroundPosition.bottomRight:
+        return const EdgeInsets.only(bottom: 20, right: 20);
+    }
+  }
+}
+
+class _EnhancedEmergingPointCard extends StatefulWidget {
+  final String text;
+  final int index;
+  const _EnhancedEmergingPointCard({required this.text, required this.index});
+
+  @override
+  State<_EnhancedEmergingPointCard> createState() =>
+      _EnhancedEmergingPointCardState();
+}
+
+class _EnhancedEmergingPointCardState extends State<_EnhancedEmergingPointCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _slideAnimation, _opacityAnimation, _scaleAnimation;
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+        duration: Duration(milliseconds: 800 + widget.index * 150),
+        vsync: this);
+    _slideAnimation = Tween<double>(begin: -60, end: 0).animate(
+        CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
+    _opacityAnimation = Tween<double>(begin: 0, end: 1)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    _scaleAnimation = Tween<double>(begin: 0.9, end: 1)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    Future.delayed(Duration(milliseconds: 300 + widget.index * 150), () {
+      if (mounted) _controller.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Transform.translate(
+            offset: Offset(_slideAnimation.value, 0),
+            child: Opacity(
+              opacity: _opacityAnimation.value,
+              child: Transform.scale(
+                scale: _scaleAnimation.value,
+                child: Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.only(bottom: 18),
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: _isHovered
+                        ? [
+                            BoxShadow(
+                                color: Colors.blue.shade100,
+                                blurRadius: 15,
+                                offset: const Offset(0, 6))
+                          ]
+                        : [
+                            BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4))
+                          ],
+                    border: Border.all(
+                        color: _isHovered
+                            ? Colors.blue.shade300
+                            : Colors.grey.shade200,
+                        width: 1.2),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 14,
+                        height: 14,
+                        margin: const EdgeInsets.only(right: 14, top: 4),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF0B0655),
+                            shape: BoxShape.circle),
+                      ),
+                      Expanded(
+                        child: Text(
+                          widget.text,
+                          style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              color: Colors.grey.shade800,
+                              height: 1.5,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
 }

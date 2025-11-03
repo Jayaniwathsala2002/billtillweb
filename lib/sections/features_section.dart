@@ -240,7 +240,7 @@ class _IndustryCardState extends State<_IndustryCard>
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
                           colors: [
-                            Color.fromRGBO(0, 0, 0, 0.5), // ✅ Fixed
+                            Color.fromRGBO(0, 0, 0, 0.5),
                             Colors.transparent,
                           ],
                         ),

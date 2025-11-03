@@ -8,6 +8,7 @@ import 'sections/partners_section.dart';
 import 'sections/business_section.dart';
 import 'sections/about_section.dart';
 import 'sections/contact_section.dart';
+import 'sections/footer_section.dart';
 import 'widgets/navbar.dart';
 
 void main() {
@@ -40,6 +41,8 @@ class HomePageState extends State<HomePage> {
   int _activeIndex = 0;
 
   void scrollTo(int index) {
+    // Prevent scrolling to footer (index 7) via navbar
+    if (index >= 7) return;
     setState(() => _activeIndex = index);
     _scrollController.scrollTo(
       index: index,
@@ -72,8 +75,14 @@ class HomePageState extends State<HomePage> {
       ),
     );
 
-    if (first.index != _activeIndex) {
-      setState(() => _activeIndex = first.index);
+    // 🔹 Only allow activeIndex from 0 to 6 (footer is index 7, ignore it)
+    int newIndex = first.index;
+    if (newIndex > 6) {
+      newIndex = 6; // Keep "Contact" active when in footer
+    }
+
+    if (newIndex != _activeIndex) {
+      setState(() => _activeIndex = newIndex);
     }
   }
 
@@ -87,7 +96,7 @@ class HomePageState extends State<HomePage> {
           ScrollablePositionedList.builder(
             itemScrollController: _scrollController,
             itemPositionsListener: _positionsListener,
-            itemCount: 7,
+            itemCount: 8, // ✅ Updated: 0 to 7 = 8 items
             itemBuilder: (context, index) {
               switch (index) {
                 case 0:
@@ -108,6 +117,8 @@ class HomePageState extends State<HomePage> {
                   return const AboutSection();
                 case 6:
                   return const ContactSection();
+                case 7:
+                  return const FooterSection(); // ✅ Footer at the end
                 default:
                   return const SizedBox();
               }
