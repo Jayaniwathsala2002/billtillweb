@@ -7,11 +7,13 @@ import 'dart:async';
 class Navbar extends StatefulWidget {
   final Function(int) onItemSelected;
   final int activeIndex;
+  final Function(String)? onLanguageSelected; // Callback for language change
 
   const Navbar({
     Key? key,
     required this.onItemSelected,
     required this.activeIndex,
+    this.onLanguageSelected,
   }) : super(key: key);
 
   @override
@@ -48,69 +50,12 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
 
   Future<void> _openInvoiceGenerator() async {
     final Uri url = Uri.parse('/webinvoice/index.html');
-
-    if (!await launchUrl(
-      url,
-      mode: LaunchMode.externalApplication,
-    )) {
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       if (!mounted) return;
-      _showErrorSnackBar('Failed to open invoice generator.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to open invoice generator.')),
+      );
     }
-  }
-
-  void _showErrorSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: GoogleFonts.poppins(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        backgroundColor: Colors.grey[800],
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-    );
-  }
-
-  void _showLanguageSnackBar(String language) {
-    final languageNames = {
-      'English': 'English',
-      'Sinhala': 'සිංහල',
-      'Tamil': 'தமிழ்',
-    };
-    final displayName = languageNames[language] ?? language;
-
-    final snackBar = SnackBar(
-      content: Text(
-        '✅ Language changed to:\n$displayName',
-        style: GoogleFonts.poppins(
-          color: Colors.white,
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
-          height: 1.4,
-        ),
-        textAlign: TextAlign.center,
-      ),
-      backgroundColor: const Color(0xFF0B0655),
-      duration: const Duration(seconds: 2),
-      behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-    );
-
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void _handleNavTap(int index) {
@@ -135,10 +80,6 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
       });
       _animationController.forward();
     }
-  }
-
-  void _onLanguageSelected(String language) {
-    _showLanguageSnackBar(language);
   }
 
   @override
@@ -171,7 +112,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 if (constraints.maxWidth >= 992) {
-                  // Desktop: Logo left, all else right-aligned
+                  // Desktop layout
                   return Row(
                     children: [
                       Image.asset(
@@ -214,16 +155,18 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                                 style: buttonTextStyle),
                           ),
                           const SizedBox(width: 16),
+                          // Language selector icon (desktop)
                           PopupMenuButton<String>(
                             icon: const Icon(Icons.language,
                                 color: Colors.white, size: 24),
-                            onSelected: _onLanguageSelected,
-                            itemBuilder: (context) => [
-                              const PopupMenuItem(
+                            onSelected: widget
+                                .onLanguageSelected, // Passes 'English', 'Sinhala', 'Tamil'
+                            itemBuilder: (context) => const [
+                              PopupMenuItem(
                                   value: 'English', child: Text('English')),
-                              const PopupMenuItem(
+                              PopupMenuItem(
                                   value: 'Sinhala', child: Text('සිංහල')),
-                              const PopupMenuItem(
+                              PopupMenuItem(
                                   value: 'Tamil', child: Text('தமிழ்')),
                             ],
                           ),
@@ -311,22 +254,21 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ✅ Language icon on FAR LEFT, Close icon on FAR RIGHT
+            // ✅ Language icon on FAR LEFT, Close on FAR RIGHT
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 PopupMenuButton<String>(
                   icon:
                       const Icon(Icons.language, color: Colors.white, size: 24),
-                  onSelected: (value) {
+                  onSelected: (String value) {
                     _toggleMenu();
-                    _onLanguageSelected(value);
+                    widget.onLanguageSelected?.call(value);
                   },
-                  itemBuilder: (context) => [
-                    const PopupMenuItem(
-                        value: 'English', child: Text('English')),
-                    const PopupMenuItem(value: 'Sinhala', child: Text('සිංහල')),
-                    const PopupMenuItem(value: 'Tamil', child: Text('தமிழ்')),
+                  itemBuilder: (context) => const [
+                    PopupMenuItem(value: 'English', child: Text('English')),
+                    PopupMenuItem(value: 'Sinhala', child: Text('සිංහල')),
+                    PopupMenuItem(value: 'Tamil', child: Text('தமிழ்')),
                   ],
                 ),
                 IconButton(
