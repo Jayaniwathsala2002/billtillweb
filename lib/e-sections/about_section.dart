@@ -93,7 +93,7 @@ class AboutSection extends StatelessWidget {
               width: 280,
               height: 400,
               child: Image.asset(
-                'assets/images/58551266-cab8-4959-84be-ec305e53167d-removebg-preview.png',
+                'assets/images/about/ceo.png',
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) => Container(
                   color: Colors.grey.shade100,

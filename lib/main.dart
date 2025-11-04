@@ -1,10 +1,11 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'language_manager.dart';
 import 'widgets/navbar.dart';
 
-// Import sections with ALIASES
+// Import all sections with aliases
 import 'e-sections/home_section.dart' as en_home;
 import 'e-sections/features_section.dart' as en_features;
 import 'e-sections/pricing_section.dart' as en_pricing;
@@ -32,35 +33,61 @@ import 't-sections/about_section.dart' as ta_about;
 import 't-sections/contact_section.dart' as ta_contact;
 import 't-sections/footer_section.dart' as ta_footer;
 
-void main() {
-  runApp(const BillTillWeb());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // 🔹 LOAD SAVED LANGUAGE
+  final prefs = await SharedPreferences.getInstance();
+  final savedLang = prefs.getString('app_language');
+  final initialLanguage = AppLanguage.fromStorageString(savedLang);
+
+  runApp(BillTillWeb(initialLanguage: initialLanguage));
 }
 
 class BillTillWeb extends StatelessWidget {
-  const BillTillWeb({Key? key}) : super(key: key);
+  final AppLanguage initialLanguage;
+
+  const BillTillWeb({Key? key, required this.initialLanguage})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: HomePage(initialLanguage: initialLanguage),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final AppLanguage initialLanguage;
+
+  const HomePage({Key? key, required this.initialLanguage}) : super(key: key);
 
   @override
   HomePageState createState() => HomePageState();
 }
 
 class HomePageState extends State<HomePage> {
-  final ItemScrollController _scrollController = ItemScrollController();
-  final ItemPositionsListener _positionsListener =
-      ItemPositionsListener.create();
+  late final ItemScrollController _scrollController;
+  late final ItemPositionsListener _positionsListener;
   int _activeIndex = 0;
-  AppLanguage _currentLanguage = AppLanguage.english;
+  late AppLanguage _currentLanguage;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentLanguage = widget.initialLanguage;
+    _scrollController = ItemScrollController();
+    _positionsListener = ItemPositionsListener.create();
+    _positionsListener.itemPositions.addListener(_updateActiveIndex);
+  }
+
+  @override
+  void dispose() {
+    _positionsListener.itemPositions.removeListener(_updateActiveIndex);
+    super.dispose();
+  }
 
   void scrollTo(int index) {
     if (index >= 7) return;
@@ -70,52 +97,6 @@ class HomePageState extends State<HomePage> {
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
-  }
-
-  void _onLanguageSelected(String langName) {
-    AppLanguage lang;
-    switch (langName) {
-      case 'Sinhala':
-        lang = AppLanguage.sinhala;
-        break;
-      case 'Tamil':
-        lang = AppLanguage.tamil;
-        break;
-      default:
-        lang = AppLanguage.english;
-    }
-    setState(() {
-      _currentLanguage = lang;
-    });
-
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          '✅ Language changed to:\n$langName',
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: const Color(0xFF0B0655),
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _positionsListener.itemPositions.addListener(_updateActiveIndex);
-  }
-
-  @override
-  void dispose() {
-    _positionsListener.itemPositions.removeListener(_updateActiveIndex);
-    super.dispose();
   }
 
   void _updateActiveIndex() {
@@ -136,6 +117,38 @@ class HomePageState extends State<HomePage> {
     if (newIndex != _activeIndex) {
       setState(() => _activeIndex = newIndex);
     }
+  }
+
+  // 🔹 Save language to localStorage
+  Future<void> _saveLanguage(AppLanguage lang) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('app_language', lang.toStorageString());
+  }
+
+  void _onLanguageSelected(String displayName) {
+    final newLang = AppLanguage.fromDisplayName(displayName);
+
+    // Save to persistent storage
+    _saveLanguage(newLang);
+
+    // Update UI
+    setState(() {
+      _currentLanguage = newLang;
+    });
+
+    // Show confirmation
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('✅ Language changed to:\n$displayName'),
+        backgroundColor: const Color(0xFF0B0655),
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+      ),
+    );
   }
 
   @override
@@ -167,8 +180,7 @@ class HomePageState extends State<HomePage> {
             child: Navbar(
               onItemSelected: scrollTo,
               activeIndex: _activeIndex,
-              onLanguageSelected:
-                  _onLanguageSelected, // ✅ must be supported in Navbar
+              onLanguageSelected: _onLanguageSelected,
             ),
           ),
         ],
