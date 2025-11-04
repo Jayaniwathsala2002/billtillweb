@@ -1,8 +1,8 @@
 // lib/widgets/navbar.dart
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:async';
 
 class Navbar extends StatefulWidget {
   final Function(int) onItemSelected;
@@ -18,29 +18,127 @@ class Navbar extends StatefulWidget {
   State<Navbar> createState() => _NavbarState();
 }
 
-class _NavbarState extends State<Navbar> {
+class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
   bool _isMenuOpen = false;
+  Timer? _debounceTimer;
+  late AnimationController _animationController;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(1.0, 0.0),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    _animationController.dispose();
+    super.dispose();
+  }
 
   Future<void> _openInvoiceGenerator() async {
     final Uri url = Uri.parse('/webinvoice/index.html');
-    try {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    } catch (e) {
+
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to open invoice generator.')),
-      );
+      _showErrorSnackBar('Failed to open invoice generator.');
     }
   }
 
-  void _closeMobileMenu() {
+  void _showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        backgroundColor: Colors.grey[800],
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    );
+  }
+
+  void _showLanguageSnackBar(String language) {
+    final languageNames = {
+      'English': 'English',
+      'Sinhala': 'සිංහල',
+      'Tamil': 'தமிழ்',
+    };
+    final displayName = languageNames[language] ?? language;
+
+    final snackBar = SnackBar(
+      content: Text(
+        '✅ Language changed to:\n$displayName',
+        style: GoogleFonts.poppins(
+          color: Colors.white,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          height: 1.4,
+        ),
+        textAlign: TextAlign.center,
+      ),
+      backgroundColor: const Color(0xFF0B0655),
+      duration: const Duration(seconds: 2),
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+    );
+
     if (!mounted) return;
-    setState(() => _isMenuOpen = false);
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void _handleNavTap(int index) {
-    _closeMobileMenu();
+    if (_debounceTimer?.isActive ?? false) return;
+    _debounceTimer = Timer(const Duration(seconds: 1), () {});
     widget.onItemSelected(index);
+    if (mounted) setState(() {});
+  }
+
+  void _toggleMenu() {
+    if (_isMenuOpen) {
+      _animationController.reverse().then((_) {
+        if (mounted) {
+          setState(() {
+            _isMenuOpen = false;
+          });
+        }
+      });
+    } else {
+      setState(() {
+        _isMenuOpen = true;
+      });
+      _animationController.forward();
+    }
+  }
+
+  void _onLanguageSelected(String language) {
+    _showLanguageSnackBar(language);
   }
 
   @override
@@ -61,82 +159,98 @@ class _NavbarState extends State<Navbar> {
 
     return Stack(
       children: [
+        // Full-width navbar background
         Container(
+          width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          decoration: const BoxDecoration(
-            color: Color(0xD30B0655),
+          decoration: BoxDecoration(
+            color: const Color(0xFF0B0655).withAlpha((0.827 * 255).round()),
           ),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth >= 992) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      'assets/images/hero/logo.png',
-                      height: 60,
-                      fit: BoxFit.contain,
-                    ),
-                    const SizedBox(width: 132),
-                    Row(
-                      children: [
-                        _buildDesktopNavItem('Home', 0, navItemStyle),
-                        const SizedBox(width: 50),
-                        _buildDesktopNavItem('Features', 1, navItemStyle),
-                        const SizedBox(width: 50),
-                        _buildDesktopNavItem('Pricing', 2, navItemStyle),
-                        const SizedBox(width: 50),
-                        _buildDesktopNavItem('Partners', 3, navItemStyle),
-                        const SizedBox(width: 50),
-                        _buildDesktopNavItem('Business', 4, navItemStyle),
-                        const SizedBox(width: 50),
-                        _buildDesktopNavItem('About', 5, navItemStyle),
-                        const SizedBox(width: 50),
-                        _buildDesktopNavItem('Contact', 6, navItemStyle),
-                      ],
-                    ),
-                    ElevatedButton(
-                      onPressed: _openInvoiceGenerator,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF43B9FE),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 18,
-                        ),
-                        elevation: 0,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1400),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth >= 992) {
+                  // Desktop: Logo left, all else right-aligned
+                  return Row(
+                    children: [
+                      Image.asset(
+                        'assets/images/hero/logo.png',
+                        height: 60,
+                        fit: BoxFit.contain,
                       ),
-                      child: Text('FREE INVOICE GENERATOR',
-                          style: buttonTextStyle),
-                    ),
-                  ],
-                );
-              } else {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // ❌ Image.asset is NOT const → remove 'const'
-                    Image.asset(
-                      'assets/images/hero/logo.png',
-                      height: 50,
-                      fit: BoxFit.contain,
-                    ),
-                    IconButton(
-                      icon: _isMenuOpen
-                          ? const Icon(Icons.close,
-                              color: Colors.white, size: 32)
-                          : const Icon(Icons.menu,
-                              color: Colors.white, size: 32),
-                      onPressed: () =>
-                          setState(() => _isMenuOpen = !_isMenuOpen),
-                    ),
-                  ],
-                );
-              }
-            },
+                      const Spacer(),
+                      Row(
+                        children: [
+                          _buildDesktopNavItem('Home', 0, navItemStyle),
+                          const SizedBox(width: 40),
+                          _buildDesktopNavItem('Features', 1, navItemStyle),
+                          const SizedBox(width: 40),
+                          _buildDesktopNavItem('Pricing', 2, navItemStyle),
+                          const SizedBox(width: 40),
+                          _buildDesktopNavItem('Partners', 3, navItemStyle),
+                          const SizedBox(width: 40),
+                          _buildDesktopNavItem('Business', 4, navItemStyle),
+                          const SizedBox(width: 40),
+                          _buildDesktopNavItem('About', 5, navItemStyle),
+                          const SizedBox(width: 40),
+                          _buildDesktopNavItem('Contact', 6, navItemStyle),
+                          const SizedBox(width: 40),
+                          ElevatedButton(
+                            onPressed: _openInvoiceGenerator,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF43B9FE),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 14,
+                              ),
+                              elevation: 0,
+                            ),
+                            child: Text('FREE INVOICE GENERATOR',
+                                style: buttonTextStyle),
+                          ),
+                          const SizedBox(width: 16),
+                          PopupMenuButton<String>(
+                            icon: const Icon(Icons.language,
+                                color: Colors.white, size: 24),
+                            onSelected: _onLanguageSelected,
+                            itemBuilder: (context) => [
+                              const PopupMenuItem(
+                                  value: 'English', child: Text('English')),
+                              const PopupMenuItem(
+                                  value: 'Sinhala', child: Text('සිංහල')),
+                              const PopupMenuItem(
+                                  value: 'Tamil', child: Text('தமிழ்')),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                } else {
+                  // Mobile layout
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset(
+                        'assets/images/hero/logo.png',
+                        height: 50,
+                        fit: BoxFit.contain,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.menu,
+                            color: Colors.white, size: 32),
+                        onPressed: _toggleMenu,
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
           ),
         ),
 
@@ -144,22 +258,23 @@ class _NavbarState extends State<Navbar> {
         if (_isMenuOpen && isMobile)
           Positioned.fill(
             child: GestureDetector(
-              onTap: _closeMobileMenu,
+              onTap: _toggleMenu,
               child: Container(
-                color: const Color.fromRGBO(0, 0, 0, 0.6),
+                color: Colors.black.withAlpha((0.6 * 255).round()),
               ),
             ),
           ),
 
-        // Mobile menu
+        // Mobile right-side menu
         if (_isMenuOpen && isMobile)
           Align(
-            alignment: Alignment.topCenter,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height -
-                  80 -
-                  MediaQuery.of(context).padding.top,
+            alignment: Alignment.centerRight,
+            child: SlideTransition(
+              position: _slideAnimation,
               child: Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                constraints: const BoxConstraints(maxWidth: 300),
+                height: MediaQuery.of(context).size.height,
                 color: const Color(0xFF0B0655),
                 child: _buildMobileMenu(navItemStyle, context),
               ),
@@ -170,30 +285,11 @@ class _NavbarState extends State<Navbar> {
   }
 
   Widget _buildDesktopNavItem(String label, int index, TextStyle style) {
-    final isActive = widget.activeIndex == index;
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () => _handleNavTap(index),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              label,
-              style: style.copyWith(
-                color: isActive ? const Color(0xFF43B9FE) : Colors.white,
-                fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 4),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              height: 2,
-              width: isActive ? 24 : 0,
-              color: const Color(0xFF43B9FE),
-            ),
-          ],
-        ),
+        child: Text(label, style: style),
       ),
     );
   }
@@ -208,85 +304,65 @@ class _NavbarState extends State<Navbar> {
       'About',
       'Contact'
     ];
-    final isVerySmall = MediaQuery.of(context).size.height < 650;
 
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 12, right: 20, left: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              GestureDetector(
-                onTap: _closeMobileMenu,
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color.fromRGBO(255, 255, 255, 0.2),
-                  ),
-                  child: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 24,
-                  ),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ✅ Language icon on FAR LEFT, Close icon on FAR RIGHT
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                PopupMenuButton<String>(
+                  icon:
+                      const Icon(Icons.language, color: Colors.white, size: 24),
+                  onSelected: (value) {
+                    _toggleMenu();
+                    _onLanguageSelected(value);
+                  },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                        value: 'English', child: Text('English')),
+                    const PopupMenuItem(value: 'Sinhala', child: Text('සිංහල')),
+                    const PopupMenuItem(value: 'Tamil', child: Text('தமிழ்')),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: 24,
-              right: 24,
-              bottom: isVerySmall ? 20 : 40,
+                IconButton(
+                  onPressed: _toggleMenu,
+                  icon: const Icon(Icons.close, color: Colors.white, size: 28),
+                ),
+              ],
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ...List.generate(labels.length, (index) {
-                    final isActive = widget.activeIndex == index;
-                    return Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () => _handleNavTap(index),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: isVerySmall ? 12 : 16,
-                            ),
-                            child: Text(
-                              labels[index],
-                              style: baseStyle.copyWith(
-                                fontSize: isVerySmall ? 16 : 18,
-                                color: isActive
-                                    ? const Color(0xFF43B9FE)
-                                    : Colors.white,
-                                fontWeight: isActive
-                                    ? FontWeight.bold
-                                    : FontWeight.w500,
-                              ),
-                            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...List.generate(labels.length, (index) {
+                      return GestureDetector(
+                        onTap: () {
+                          _toggleMenu();
+                          _handleNavTap(index);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Text(
+                            labels[index],
+                            style: baseStyle.copyWith(fontSize: 18),
                           ),
                         ),
-                        Container(
-                          height: 2,
-                          width: double.infinity,
-                          color: isActive
-                              ? const Color(0xFF43B9FE)
-                              : const Color.fromRGBO(255, 255, 255, 0.2),
-                        ),
-                      ],
-                    );
-                  }),
-                ],
+                      );
+                    }),
+                  ],
+                ),
               ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

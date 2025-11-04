@@ -1,14 +1,14 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'sections/home_section.dart';
-import 'sections/features_section.dart';
-import 'sections/pricing_section.dart';
-import 'sections/partners_section.dart';
-import 'sections/business_section.dart';
-import 'sections/about_section.dart';
-import 'sections/contact_section.dart';
-import 'sections/footer_section.dart';
+import 'e-sections/home_section.dart';
+import 'e-sections/features_section.dart';
+import 'e-sections/pricing_section.dart';
+import 'e-sections/partners_section.dart';
+import 'e-sections/business_section.dart';
+import 'e-sections/about_section.dart';
+import 'e-sections/contact_section.dart';
+import 'e-sections/footer_section.dart';
 import 'widgets/navbar.dart';
 
 void main() {

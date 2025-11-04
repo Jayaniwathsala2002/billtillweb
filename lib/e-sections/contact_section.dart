@@ -121,8 +121,8 @@ class _ContactMethods extends StatelessWidget {
       _ContactMethod(
         icon: Icons.phone,
         title: 'Call Us',
-        detail: '+94 70 123 4567',
-        url: Uri.parse('tel:+94701234567'),
+        detail: '+94 11 475 8900',
+        url: Uri.parse('tel:+94114758900'),
       ),
       _ContactMethod(
         icon: Icons.email,
