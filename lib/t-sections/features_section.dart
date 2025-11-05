@@ -18,7 +18,7 @@ class FeaturesSection extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 42,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF0B0655).withAlpha((0.827 * 255).round()),
+              color: const Color(0xFF0B0655),
             ),
             textAlign: TextAlign.center,
           ),
@@ -70,7 +70,7 @@ class FeaturesSection extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 42,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF0B0655).withAlpha((0.827 * 255).round()),
+              color: const Color(0xFF0B0655),
             ),
             textAlign: TextAlign.center,
           ),

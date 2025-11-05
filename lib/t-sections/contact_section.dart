@@ -21,7 +21,7 @@ class ContactSection extends StatelessWidget {
         children: [
           // Header Text
           Text(
-            'கட்ட தொடங்க தயாராக உள்ளீர்களா?',
+            'Ready to Start Building?',
             style: GoogleFonts.poppins(
               fontSize: 36,
               fontWeight: FontWeight.bold,
@@ -32,7 +32,7 @@ class ContactSection extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'நாம் உங்கள் திட்டத்தை பேசிப் பார்க்கலாம் மற்றும் உங்கள் குறிக்கோள்களை அடைவதில் எவ்வாறு உதவலாம் என்பதை கண்டறியலாம்.',
+            'Let’s discuss your project and discover how we can help you achieve your goals.',
             style: GoogleFonts.poppins(
               fontSize: 18,
               color: const Color(0xFF555555),

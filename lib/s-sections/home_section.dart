@@ -1,4 +1,4 @@
-// lib/s-sections/home_section.dart
+// lib/sections/home_section.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
@@ -6,7 +6,7 @@ import 'dart:async';
 class HomeSection extends StatefulWidget {
   final bool isMobile;
   final VoidCallback onInvoiceTap;
-  final VoidCallback onViewPricingTap;
+  final VoidCallback onViewPricingTap; // ✅ This will scroll to Pricing
 
   const HomeSection({
     Key? key,
@@ -26,8 +26,7 @@ class _HomeSectionState extends State<HomeSection> {
     'assets/images/hero/hero3.jpeg',
   ];
 
-  // Sinhala words
-  final List<String> _words = ['රිටේල්', 'රෙස්ටුරන්ට්', 'කාර් රෙන්ට් කරන්න'];
+  final List<String> _words = ['RETAIL', 'RESTAURANT', 'RENT-A-CAR'];
   int _currentSlide = 0;
   int _currentWord = 0;
 
@@ -70,6 +69,7 @@ class _HomeSectionState extends State<HomeSection> {
       height: height,
       child: Stack(
         children: [
+          // Background Carousel
           ...List.generate(_images.length, (index) {
             return AnimatedOpacity(
               opacity: index == _currentSlide ? 1.0 : 0.0,
@@ -82,9 +82,13 @@ class _HomeSectionState extends State<HomeSection> {
               ),
             );
           }),
+
+          // Dark overlay
           Container(
             color: const Color(0xFF0B0655).withAlpha((0.827 * 255).round()),
           ),
+
+          // Content
           Padding(
             padding: EdgeInsets.fromLTRB(
               isMobile ? 20 : 50,
@@ -107,9 +111,9 @@ class _HomeSectionState extends State<HomeSection> {
                       color: Colors.white,
                     ),
                     children: [
-                      const TextSpan(text: 'බිල් ටිල් – POS සඳහා\n'),
+                      const TextSpan(text: 'BILL TILL – POS FOR\n'),
                       const TextSpan(
-                        text: 'යළි සැලසුම් කරන ලද\n',
+                        text: 'REIMAGINED\n',
                         style: TextStyle(color: Color(0xFF43B9FE)),
                       ),
                       TextSpan(text: _words[_currentWord]),
@@ -119,7 +123,7 @@ class _HomeSectionState extends State<HomeSection> {
                 ),
                 const SizedBox(height: 50),
                 ElevatedButton(
-                  onPressed: widget.onViewPricingTap,
+                  onPressed: widget.onViewPricingTap, // ✅ Scrolls to Pricing
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     foregroundColor: Colors.white,
@@ -130,7 +134,7 @@ class _HomeSectionState extends State<HomeSection> {
                         borderRadius: BorderRadius.circular(8)),
                   ),
                   child: Text(
-                    'මිල බලන්න',
+                    'View Pricing',
                     style: GoogleFonts.poppins(
                       fontSize: isMobile ? 16 : 18,
                       fontWeight: FontWeight.bold,
@@ -151,7 +155,7 @@ class _HomeSectionState extends State<HomeSection> {
                             borderRadius: BorderRadius.circular(8)),
                       ),
                       child: Text(
-                        'නොමිලේ ඉන්වොයිස් ජනකය',
+                        'FREE INVOICE GENERATOR',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -161,6 +165,7 @@ class _HomeSectionState extends State<HomeSection> {
                   ),
                 ],
                 const SizedBox(height: 100),
+                // Carousel Indicators
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(_images.length, (index) {
