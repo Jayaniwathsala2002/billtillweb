@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // Bill Till Brand Color: #0B0655 → R:11, G:6, B:85
-const Color billTillSolid = Color.fromRGBO(11, 6, 85, 1.0);
-const Color billTill827 = Color.fromRGBO(11, 6, 85, 0.827);
-const Color billTill70 = Color.fromRGBO(11, 6, 85, 0.7);
+const Color billTillSolid = Color(0xFF0B0655);
 const Color billTill50 = Color.fromRGBO(11, 6, 85, 0.5);
 const Color billTill20 = Color.fromRGBO(11, 6, 85, 0.2);
 const Color billTill15 = Color.fromRGBO(11, 6, 85, 0.15);
-
-// Helper to safely create color with opacity (non-const)
-Color _withOpacity(Color base, double opacity) {
-  return Color.fromRGBO(11, 6, 85, opacity);
-}
 
 class AboutSection extends StatelessWidget {
   const AboutSection({Key? key}) : super(key: key);
@@ -38,9 +31,9 @@ class AboutSection extends StatelessWidget {
                 Text(
                   'About Us',
                   style: GoogleFonts.poppins(
-                    fontSize: isMobile ? 28 : 32,
+                    fontSize: isMobile ? 38 : 42,
                     fontWeight: FontWeight.bold,
-                    color: billTill827,
+                    color: billTillSolid,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -54,14 +47,14 @@ class AboutSection extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),
-                Wrap(
-                  spacing: isMobile ? 16 : 28,
-                  runSpacing: isMobile ? 16 : 28,
+                const Wrap(
+                  spacing: 28,
+                  runSpacing: 28,
                   alignment: WrapAlignment.center,
                   children: [
                     SizedBox(
-                      width: isMobile ? 280 : 300,
-                      height: isMobile ? 220 : 240,
+                      width: 300,
+                      height: 240,
                       child: _StyledHoverCompanyInfoCard(
                         icon: Icons.history,
                         title: 'Our Story',
@@ -70,8 +63,8 @@ class AboutSection extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: isMobile ? 280 : 300,
-                      height: isMobile ? 220 : 240,
+                      width: 300,
+                      height: 240,
                       child: _StyledHoverCompanyInfoCard(
                         icon: Icons.flag,
                         title: 'Our Mission',
@@ -80,8 +73,8 @@ class AboutSection extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: isMobile ? 280 : 300,
-                      height: isMobile ? 220 : 240,
+                      width: 300,
+                      height: 240,
                       child: _StyledHoverCompanyInfoCard(
                         icon: Icons.people,
                         title: 'Our Culture',
@@ -116,7 +109,7 @@ class AboutSection extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 768;
     final cardSize = isMobile ? 220.0 : 250.0;
-    final cards = [
+    const cards = [
       _ValueCardData(
           Icons.lightbulb_outline,
           'Innovation',
@@ -151,7 +144,7 @@ class AboutSection extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 6),
                         child: _ValueCard(
                           stepColor: Colors.blue.shade700,
-                          cornerColor: billTill827,
+                          cornerColor: billTillSolid,
                           icon: card.icon,
                           title: card.title,
                           description: card.description,
@@ -170,7 +163,7 @@ class AboutSection extends StatelessWidget {
                   children: [
                     _ValueCard(
                       stepColor: Colors.blue.shade700,
-                      cornerColor: billTill827,
+                      cornerColor: billTillSolid,
                       icon: cards[0].icon,
                       title: cards[0].title,
                       description: cards[0].description,
@@ -181,7 +174,7 @@ class AboutSection extends StatelessWidget {
                     const SizedBox(width: 24),
                     _ValueCard(
                       stepColor: Colors.blue.shade700,
-                      cornerColor: billTill827,
+                      cornerColor: billTillSolid,
                       icon: cards[1].icon,
                       title: cards[1].title,
                       description: cards[1].description,
@@ -197,7 +190,7 @@ class AboutSection extends StatelessWidget {
                   children: [
                     _ValueCard(
                       stepColor: Colors.blue.shade700,
-                      cornerColor: billTill827,
+                      cornerColor: billTillSolid,
                       icon: cards[2].icon,
                       title: cards[2].title,
                       description: cards[2].description,
@@ -208,7 +201,7 @@ class AboutSection extends StatelessWidget {
                     const SizedBox(width: 24),
                     _ValueCard(
                       stepColor: Colors.blue.shade700,
-                      cornerColor: billTill827,
+                      cornerColor: billTillSolid,
                       icon: cards[3].icon,
                       title: cards[3].title,
                       description: cards[3].description,
@@ -232,9 +225,9 @@ class AboutSection extends StatelessWidget {
         Text(
           title,
           style: GoogleFonts.poppins(
-            fontSize: isMobile ? 28 : 32,
+            fontSize: isMobile ? 38 : 42,
             fontWeight: FontWeight.bold,
-            color: billTill827,
+            color: billTillSolid,
           ),
         ),
         const SizedBox(height: 6),
@@ -271,9 +264,9 @@ class AboutSection extends StatelessWidget {
                       Text(
                         'Why Choose\nBill Till?',
                         style: GoogleFonts.poppins(
-                          fontSize: 40,
+                          fontSize: 42,
                           fontWeight: FontWeight.bold,
-                          color: billTill827,
+                          color: billTillSolid,
                           height: 1.2,
                         ),
                         textAlign: TextAlign.right,
@@ -323,7 +316,7 @@ class AboutSection extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: isMobile ? 26 : 32,
                   fontWeight: FontWeight.bold,
-                  color: billTill827,
+                  color: billTillSolid,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -384,9 +377,9 @@ class AboutSection extends StatelessWidget {
             width: 18,
             decoration: BoxDecoration(
               gradient:
-                  const LinearGradient(colors: [billTillSolid, billTill70]),
+                  const LinearGradient(colors: [billTillSolid, billTillSolid]),
               borderRadius: BorderRadius.circular(8),
-              boxShadow: [BoxShadow(color: billTill50, blurRadius: 12)],
+              boxShadow: const [BoxShadow(color: billTill50, blurRadius: 12)],
             ),
           ),
         ),
@@ -401,7 +394,7 @@ class AboutSection extends StatelessWidget {
             top: 30,
             left: 0,
             right: 0,
-            child: Container(height: 10, color: Colors.grey.withOpacity(0.2))),
+            child: Container(height: 10, color: Colors.grey)),
         Positioned(
           top: 25,
           left: 0,
@@ -410,9 +403,9 @@ class AboutSection extends StatelessWidget {
             height: 18,
             decoration: BoxDecoration(
               gradient:
-                  const LinearGradient(colors: [billTillSolid, billTill70]),
+                  const LinearGradient(colors: [billTillSolid, billTillSolid]),
               borderRadius: BorderRadius.circular(8),
-              boxShadow: [BoxShadow(color: billTill50, blurRadius: 12)],
+              boxShadow: const [BoxShadow(color: billTill50, blurRadius: 12)],
             ),
           ),
         ),
@@ -455,16 +448,12 @@ class _StyledHoverCompanyInfoCardState
           ),
           boxShadow: _isHovered
               ? [
-                  BoxShadow(
-                      color: billTill20,
-                      blurRadius: 20,
-                      offset: const Offset(0, 6))
+                  const BoxShadow(
+                      color: billTill20, blurRadius: 20, offset: Offset(0, 6))
                 ]
               : [
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(0.15),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4))
+                  const BoxShadow(
+                      color: Colors.grey, blurRadius: 10, offset: Offset(0, 4))
                 ],
         ),
         child: Column(
@@ -544,14 +533,11 @@ class _ValueCard extends StatelessWidget {
             width: width - 20,
             height: height - 20,
             margin: _getMargin(),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2))
+                    color: Colors.grey, blurRadius: 8, offset: Offset(0, 2))
               ],
             ),
             child: Padding(
@@ -563,10 +549,10 @@ class _ValueCard extends StatelessWidget {
                     width: 60,
                     height: 60,
                     decoration: BoxDecoration(
-                      color: _withOpacity(cornerColor, 0.1),
+                      color: cornerColor,
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(icon, size: 30, color: cornerColor),
+                    child: Icon(icon, size: 30, color: Colors.white),
                   ),
                   const SizedBox(height: 14),
                   Text(
@@ -574,7 +560,7 @@ class _ValueCard extends StatelessWidget {
                     style: GoogleFonts.poppins(
                         fontSize: 19,
                         fontWeight: FontWeight.bold,
-                        color: billTill827),
+                        color: billTillSolid),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
@@ -614,7 +600,7 @@ class _ValueCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: _withOpacity(cornerColor, 0.4),
+              color: cornerColor,
               blurRadius: 12,
               offset: const Offset(0, 6),
             )
@@ -700,16 +686,16 @@ class _EnhancedEmergingPointCardState extends State<_EnhancedEmergingPointCard>
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: _isHovered
                         ? [
-                            BoxShadow(
+                            const BoxShadow(
                                 color: billTill15,
                                 blurRadius: 15,
-                                offset: const Offset(0, 6))
+                                offset: Offset(0, 6))
                           ]
                         : [
-                            BoxShadow(
-                                color: Colors.grey.withOpacity(0.1),
+                            const BoxShadow(
+                                color: Colors.grey,
                                 blurRadius: 8,
-                                offset: const Offset(0, 4))
+                                offset: Offset(0, 4))
                           ],
                     border: Border.all(
                       color: _isHovered ? billTillSolid : Colors.grey.shade200,

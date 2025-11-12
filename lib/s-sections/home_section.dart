@@ -92,7 +92,7 @@ class _HomeSectionState extends State<HomeSection> {
           Padding(
             padding: EdgeInsets.fromLTRB(
               isMobile ? 20 : 50,
-              isMobile ? 100 : 250,
+              isMobile ? 200 : 350,
               isMobile ? 20 : 50,
               40,
             ),
@@ -109,14 +109,23 @@ class _HomeSectionState extends State<HomeSection> {
                       fontSize: isMobile ? 28 : 48,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
+                      shadows: [
+                        const Shadow(
+                          offset: Offset(2.0, 2.0),
+                          blurRadius: 3.0,
+                          color: Colors.black,
+                        ),
+                      ],
                     ),
                     children: [
-                      const TextSpan(text: 'BILL TILL – POS FOR\n'),
                       const TextSpan(
-                        text: 'REIMAGINED\n',
-                        style: TextStyle(color: Color(0xFF43B9FE)),
+                        text: 'REIMAGINED POS FOR\n',
+                        style: TextStyle(color: Colors.white),
                       ),
-                      TextSpan(text: _words[_currentWord]),
+                      TextSpan(
+                        text: _words[_currentWord],
+                        style: const TextStyle(color: Color(0xFF43B9FE)),
+                      ),
                     ],
                   ),
                   textAlign: isMobile ? TextAlign.center : TextAlign.left,

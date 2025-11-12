@@ -32,12 +32,12 @@ class FeaturesSection extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 50),
-          Wrap(
+          const Wrap(
             alignment: WrapAlignment.center,
             runAlignment: WrapAlignment.center,
             spacing: 24,
             runSpacing: 40,
-            children: const [
+            children: [
               _FeatureCard(
                 title: 'Point of Sale (POS)',
                 description:
@@ -84,7 +84,7 @@ class FeaturesSection extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 40),
-          Wrap(
+          const Wrap(
             alignment: WrapAlignment.center,
             runAlignment: WrapAlignment.center,
             spacing: 24,

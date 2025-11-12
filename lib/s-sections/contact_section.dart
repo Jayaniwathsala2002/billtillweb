@@ -69,10 +69,11 @@ class _WhatsAppButton extends StatelessWidget {
       child: GestureDetector(
         onTap: () async {
           // Trim whitespace from URL
-          final Uri url = Uri.parse('https://wa.me/94701234567');
+          final Uri url = Uri.parse('https://wa.me/94701234567  ');
           if (await canLaunchUrl(url)) {
             await launchUrl(url);
           } else {
+            if (!context.mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Could not open WhatsApp')),
             );
@@ -86,7 +87,7 @@ class _WhatsAppButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(40),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.15),
+                color: Colors.black.withValues(alpha: 0.15),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               ),
@@ -95,7 +96,8 @@ class _WhatsAppButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.chat_bubble_outline, color: Colors.white, size: 28),
+              const Icon(Icons.chat_bubble_outline,
+                  color: Colors.white, size: 28),
               const SizedBox(width: 12),
               Text(
                 'Chat with us',
@@ -135,7 +137,7 @@ class _ContactMethods extends StatelessWidget {
         title: 'Visit Us',
         detail: 'Negombo, Sri Lanka',
         url: Uri.parse(
-            'https://www.google.com/maps/place/Ceylon+Innovation+Services+(PVT)+LTD/@7.2344801,79.8481646,17z/data=!4m6!3m5!1s0x3ae2cb6c28738405:0x9929b748309020af!8m2!3d7.2340544!4d79.8494628!16s%2Fg%2F11jg88xt2s?entry=ttu&g_ep=EgoyMDI5MTAyMi4wIKXMDSoASAFQAw%3D%3D'),
+            'https://www.google.com/maps/place/Ceylon+Innovation+Services+  (PVT)+LTD/@7.2344801,79.8481646,17z/data=!4m6!3m5!1s0x3ae2cb6c28738405:0x9929b748309020af!8m2!3d7.2340544!4d79.8494628!16s%2Fg%2F11jg88xt2s?entry=ttu&g_ep=EgoyMDI5MTAyMi4wIKXMDSoASAFQAw%3D%3D'),
       ),
     ];
 
@@ -192,6 +194,7 @@ class _ContactMethod extends StatelessWidget {
           if (await canLaunchUrl(url)) {
             await launchUrl(url);
           } else {
+            if (!context.mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Could not open: $detail')),
             );
@@ -208,7 +211,7 @@ class _ContactMethod extends StatelessWidget {
             border: Border.all(color: Colors.grey.shade200),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -287,7 +290,7 @@ class _ContactFormState extends State<_ContactForm> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 16,
             offset: const Offset(0, 8),
           ),
@@ -321,7 +324,7 @@ class _ContactFormState extends State<_ContactForm> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: _billTillBlue),
+                  borderSide: const BorderSide(color: _billTillBlue),
                 ),
               ),
               validator: (value) =>
@@ -343,7 +346,7 @@ class _ContactFormState extends State<_ContactForm> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: _billTillBlue),
+                  borderSide: const BorderSide(color: _billTillBlue),
                 ),
               ),
               validator: (value) {
@@ -372,7 +375,7 @@ class _ContactFormState extends State<_ContactForm> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: _billTillBlue),
+                  borderSide: const BorderSide(color: _billTillBlue),
                 ),
               ),
               validator: (value) =>
@@ -384,6 +387,7 @@ class _ContactFormState extends State<_ContactForm> {
               child: ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
+                    if (!context.mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                           content: Text('Message sent! We’ll reply soon.')),

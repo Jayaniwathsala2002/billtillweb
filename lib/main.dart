@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'language_manager.dart';
-import 'widgets/navbar.dart';
 
 // Import all sections with aliases
 import 'e-sections/home_section.dart' as en_home;
@@ -32,6 +31,11 @@ import 't-sections/business_section.dart' as ta_business;
 import 't-sections/about_section.dart' as ta_about;
 import 't-sections/contact_section.dart' as ta_contact;
 import 't-sections/footer_section.dart' as ta_footer;
+
+// Import different navbars
+import 'e-widgets/navbar.dart' as en_navbar;
+import 's-widgets/navbar.dart' as si_navbar;
+import 't-widgets/navbar.dart' as ta_navbar;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -177,15 +181,34 @@ class HomePageState extends State<HomePage> {
             top: 0,
             left: 0,
             right: 0,
-            child: Navbar(
-              onItemSelected: scrollTo,
-              activeIndex: _activeIndex,
-              onLanguageSelected: _onLanguageSelected,
-            ),
+            child: _buildNavbar(),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildNavbar() {
+    switch (_currentLanguage) {
+      case AppLanguage.english:
+        return en_navbar.Navbar(
+          onItemSelected: scrollTo,
+          activeIndex: _activeIndex,
+          onLanguageSelected: _onLanguageSelected,
+        );
+      case AppLanguage.sinhala:
+        return si_navbar.Navbar(
+          onItemSelected: scrollTo,
+          activeIndex: _activeIndex,
+          onLanguageSelected: _onLanguageSelected,
+        );
+      case AppLanguage.tamil:
+        return ta_navbar.Navbar(
+          onItemSelected: scrollTo,
+          activeIndex: _activeIndex,
+          onLanguageSelected: _onLanguageSelected,
+        );
+    }
   }
 
   // English
