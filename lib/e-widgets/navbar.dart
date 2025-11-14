@@ -49,7 +49,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
   }
 
   Future<void> _openInvoiceGenerator() async {
-    final Uri url = Uri.parse('/invoice.html');
+    final Uri url = Uri.parse('web/web/invoice.html');
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
