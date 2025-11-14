@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeSection extends StatefulWidget {
   final bool isMobile;
@@ -32,6 +33,17 @@ class _HomeSectionState extends State<HomeSection> {
 
   late Timer _slideTimer;
   late Timer _wordTimer;
+
+  // Add this function to open invoice generator
+  Future<void> _openInvoiceGenerator() async {
+    final Uri url = Uri.parse('web/web/invoice.html');
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to open invoice generator.')),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -155,7 +167,8 @@ class _HomeSectionState extends State<HomeSection> {
                   SizedBox(
                     width: 280,
                     child: ElevatedButton(
-                      onPressed: widget.onInvoiceTap,
+                      onPressed:
+                          _openInvoiceGenerator, // Changed this line to call the invoice function
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF43B9FE),
                         foregroundColor: Colors.white,
