@@ -1,16 +1,5 @@
 {
-  "builds": [
-    {
-      "src": "pubspec.yaml",
-      "use": "@vercel/flutter",
-      "config": {
-        "buildCommand": "flutter build web",
-        "outputDirectory": "build/web"
-      }
-    }
-  ],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
