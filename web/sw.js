@@ -2,7 +2,7 @@
 const CACHE_NAME = 'zam-gems-cache-v1';
 const urlsToCache = [
   '/',
-  '/index.html',
+  '/invoice.html',
   '/main.dart.js',
   '/flutter_service_worker.js',
   // Add other important assets
