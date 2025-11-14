@@ -1,4 +1,4 @@
-// lib/s-widgets/navbar.dart
+// lib/widgets/navbar.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -49,7 +49,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
   }
 
   Future<void> _openInvoiceGenerator() async {
-    final Uri url = Uri.parse('/webinvoice/index.html');
+    final Uri url = Uri.parse('/web/invoice.html');
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -82,6 +82,65 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
     }
   }
 
+  // Function to show confirmation dialog before changing language
+  Future<void> _confirmLanguageChange(String language) async {
+    String displayLanguage = language;
+    if (language == 'Sinhala') {
+      displayLanguage = 'සිංහල';
+    } else if (language == 'Tamil') {
+      displayLanguage = 'தமிழ்';
+    }
+
+    bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF0B0655), // Match navbar color
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          title: Text(
+            'Confirm Language Change',
+            style: GoogleFonts.poppins(color: Colors.white),
+          ),
+          content: Text(
+            'Are you sure you want to select $displayLanguage?',
+            style: GoogleFonts.poppins(color: Colors.white70),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // User cancelled
+              },
+              child: Text(
+                'Cancel',
+                style: GoogleFonts.poppins(
+                    color: const Color(0xFF43B9FE)), // Match button color
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // User confirmed
+              },
+              child: Text(
+                'OK',
+                style: GoogleFonts.poppins(
+                    color: const Color(0xFF43B9FE)), // Match button color
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed == true) {
+      // Call the parent's language selection callback if confirmed
+      if (mounted) {
+        widget.onLanguageSelected?.call(language);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final navItemStyle = GoogleFonts.poppins(
@@ -97,17 +156,6 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
     );
 
     final bool isMobile = MediaQuery.of(context).size.width < 992;
-
-    // Sinhala navigation labels
-    final labels = [
-      'මුල් පිටුව', // Home
-      'විශේෂාංග', // Features
-      'මිල් අංකය', // Pricing
-      'අංශලාභීන්', // Partners
-      'ව්‍යාපාරය', // Business
-      'අප ගැන', // About
-      'සම්බන්ධතාවයේ පවතිමු', // Contact
-    ];
 
     return Stack(
       children: [
@@ -126,27 +174,32 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                   // Desktop layout
                   return Row(
                     children: [
-                      Image.asset(
-                        'assets/images/hero/logo.png',
-                        height: 60,
-                        fit: BoxFit.contain,
+                      GestureDetector(
+                        onTap: () {
+                          _handleNavTap(0); // Navigate to home page
+                        },
+                        child: Image.asset(
+                          'assets/images/hero/logo.png',
+                          height: 60,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                       const Spacer(),
                       Row(
                         children: [
-                          _buildDesktopNavItem(labels[0], 0, navItemStyle),
+                          _buildDesktopNavItem('Home', 0, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem(labels[1], 1, navItemStyle),
+                          _buildDesktopNavItem('Features', 1, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem(labels[2], 2, navItemStyle),
+                          _buildDesktopNavItem('Pricing', 2, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem(labels[3], 3, navItemStyle),
+                          _buildDesktopNavItem('Partners', 3, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem(labels[4], 4, navItemStyle),
+                          _buildDesktopNavItem('Business', 4, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem(labels[5], 5, navItemStyle),
+                          _buildDesktopNavItem('About', 5, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem(labels[6], 6, navItemStyle),
+                          _buildDesktopNavItem('Contact', 6, navItemStyle),
                           const SizedBox(width: 40),
                           ElevatedButton(
                             onPressed: _openInvoiceGenerator,
@@ -162,7 +215,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                               ),
                               elevation: 0,
                             ),
-                            child: Text('නොමිලේ ගිණුම් පත්‍රය ජනකය',
+                            child: Text('FREE INVOICE GENERATOR',
                                 style: buttonTextStyle),
                           ),
                           const SizedBox(width: 16),
@@ -170,8 +223,8 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                           PopupMenuButton<String>(
                             icon: const Icon(Icons.language,
                                 color: Colors.white, size: 24),
-                            onSelected: widget
-                                .onLanguageSelected, // Passes 'English', 'Sinhala', 'Tamil'
+                            onSelected:
+                                _confirmLanguageChange, // Use the confirmation function
                             itemBuilder: (context) => const [
                               PopupMenuItem(
                                   value: 'English', child: Text('English')),
@@ -190,10 +243,15 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset(
-                        'assets/images/hero/logo.png',
-                        height: 50,
-                        fit: BoxFit.contain,
+                      GestureDetector(
+                        onTap: () {
+                          _handleNavTap(0); // Navigate to home page
+                        },
+                        child: Image.asset(
+                          'assets/images/hero/logo.png',
+                          height: 50,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(Icons.menu,
@@ -230,7 +288,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                 constraints: const BoxConstraints(maxWidth: 300),
                 height: MediaQuery.of(context).size.height,
                 color: const Color(0xFF0B0655),
-                child: _buildMobileMenu(navItemStyle, context, labels),
+                child: _buildMobileMenu(navItemStyle, context),
               ),
             ),
           ),
@@ -248,8 +306,17 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildMobileMenu(
-      TextStyle baseStyle, BuildContext context, List<String> labels) {
+  Widget _buildMobileMenu(TextStyle baseStyle, BuildContext context) {
+    final labels = [
+      'Home',
+      'Features',
+      'Pricing',
+      'Partners',
+      'Business',
+      'About',
+      'Contact'
+    ];
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -265,7 +332,8 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                       const Icon(Icons.language, color: Colors.white, size: 24),
                   onSelected: (String value) {
                     _toggleMenu();
-                    widget.onLanguageSelected?.call(value);
+                    _confirmLanguageChange(
+                        value); // Use the confirmation function
                   },
                   itemBuilder: (context) => const [
                     PopupMenuItem(value: 'English', child: Text('English')),

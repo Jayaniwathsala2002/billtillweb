@@ -49,7 +49,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
   }
 
   Future<void> _openInvoiceGenerator() async {
-    final Uri url = Uri.parse('/webinvoice/index.html');
+    final Uri url = Uri.parse('/web/invoice.html');
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -79,6 +79,65 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
         _isMenuOpen = true;
       });
       _animationController.forward();
+    }
+  }
+
+  // Function to show confirmation dialog before changing language
+  Future<void> _confirmLanguageChange(String language) async {
+    String displayLanguage = language;
+    if (language == 'Sinhala') {
+      displayLanguage = 'සිංහල';
+    } else if (language == 'Tamil') {
+      displayLanguage = 'தமிழ்';
+    }
+
+    bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF0B0655), // Match navbar color
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          title: Text(
+            'Confirm Language Change',
+            style: GoogleFonts.poppins(color: Colors.white),
+          ),
+          content: Text(
+            'Are you sure you want to select $displayLanguage?',
+            style: GoogleFonts.poppins(color: Colors.white70),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // User cancelled
+              },
+              child: Text(
+                'Cancel',
+                style: GoogleFonts.poppins(
+                    color: const Color(0xFF43B9FE)), // Match button color
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // User confirmed
+              },
+              child: Text(
+                'OK',
+                style: GoogleFonts.poppins(
+                    color: const Color(0xFF43B9FE)), // Match button color
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed == true) {
+      // Call the parent's language selection callback if confirmed
+      if (mounted) {
+        widget.onLanguageSelected?.call(language);
+      }
     }
   }
 
@@ -115,10 +174,15 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                   // Desktop layout
                   return Row(
                     children: [
-                      Image.asset(
-                        'assets/images/hero/logo.png',
-                        height: 60,
-                        fit: BoxFit.contain,
+                      GestureDetector(
+                        onTap: () {
+                          _handleNavTap(0); // Navigate to home page
+                        },
+                        child: Image.asset(
+                          'assets/images/hero/logo.png',
+                          height: 60,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                       const Spacer(),
                       Row(
@@ -159,8 +223,8 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                           PopupMenuButton<String>(
                             icon: const Icon(Icons.language,
                                 color: Colors.white, size: 24),
-                            onSelected: widget
-                                .onLanguageSelected, // Passes 'English', 'Sinhala', 'Tamil'
+                            onSelected:
+                                _confirmLanguageChange, // Use the confirmation function
                             itemBuilder: (context) => const [
                               PopupMenuItem(
                                   value: 'English', child: Text('English')),
@@ -179,10 +243,15 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset(
-                        'assets/images/hero/logo.png',
-                        height: 50,
-                        fit: BoxFit.contain,
+                      GestureDetector(
+                        onTap: () {
+                          _handleNavTap(0); // Navigate to home page
+                        },
+                        child: Image.asset(
+                          'assets/images/hero/logo.png',
+                          height: 50,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(Icons.menu,
@@ -263,7 +332,8 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                       const Icon(Icons.language, color: Colors.white, size: 24),
                   onSelected: (String value) {
                     _toggleMenu();
-                    widget.onLanguageSelected?.call(value);
+                    _confirmLanguageChange(
+                        value); // Use the confirmation function
                   },
                   itemBuilder: (context) => const [
                     PopupMenuItem(value: 'English', child: Text('English')),

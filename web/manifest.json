@@ -1,10 +1,14 @@
 {
-    "name": "billtill",
-    "short_name": "billtill",
-    "start_url": ".",
+    "name": "BILL TILL",
+    "short_name": "BILL TILL",
+    "start_url": "/",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
+    "display_override": [
+        "standalone"
+    ],
+    "scope": "/",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
     "description": "A new Flutter project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
