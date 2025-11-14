@@ -2,9 +2,10 @@
   "builds": [
     {
       "src": "pubspec.yaml",
-      "use": "@vercel/static-build",
+      "use": "@vercel/flutter",
       "config": {
-        "distDir": "build/web"
+        "buildCommand": "flutter build web --base-href=/",
+        "outputDirectory": "build/web"
       }
     }
   ],
@@ -12,7 +13,5 @@
     { "handle": "filesystem" },
     { "src": "/", "dest": "/index.html" },
     { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "cleanUrls": true,
-  "trailingSlash": false
+  ]
 }
