@@ -113,7 +113,7 @@ class _HomeSectionState extends State<HomeSection> {
           Padding(
             padding: EdgeInsets.fromLTRB(
               isMobile ? 20 : 50,
-              isMobile ? 200 : 350,
+              isMobile ? 150 : 300,
               isMobile ? 20 : 50,
               40,
             ),
@@ -195,7 +195,7 @@ class _HomeSectionState extends State<HomeSection> {
                     ),
                   ),
                 ],
-                const SizedBox(height: 90),
+                const SizedBox(height: 80),
                 // Carousel Indicators
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
