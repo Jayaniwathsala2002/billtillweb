@@ -27,7 +27,11 @@ class _HomeSectionState extends State<HomeSection> {
     'assets/images/hero/hero3.jpeg',
   ];
 
-  final List<String> _words = ['RETAIL', 'RESTAURANT', 'RENT-A-CAR'];
+  final List<String> _words = [
+    'වෙලෙඳසැල් සඳහා',
+    'රෙස්ටූරන්ට් සඳහා',
+    'කුලීරථ සේවා සඳහා​'
+  ];
   int _currentSlide = 0;
   int _currentWord = 0;
 
@@ -140,7 +144,7 @@ class _HomeSectionState extends State<HomeSection> {
                     ),
                     children: [
                       const TextSpan(
-                        text: 'REIMAGINED POS FOR\n',
+                        text: 'ප්‍රතිනිර්මාණය වූ POS\n',
                         style: TextStyle(color: Colors.white),
                       ),
                       TextSpan(
@@ -164,7 +168,7 @@ class _HomeSectionState extends State<HomeSection> {
                         borderRadius: BorderRadius.circular(8)),
                   ),
                   child: Text(
-                    'View Pricing',
+                    'මිල බලන්න​',
                     style: GoogleFonts.poppins(
                       fontSize: isMobile ? 16 : 18,
                       fontWeight: FontWeight.bold,

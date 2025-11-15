@@ -192,19 +192,21 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                       const Spacer(),
                       Row(
                         children: [
-                          _buildDesktopNavItem('Home', 0, navItemStyle),
+                          _buildDesktopNavItem(
+                              'ප්‍රධාන පිටුව', 0, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem('Features', 1, navItemStyle),
+                          _buildDesktopNavItem('විශේෂාංග', 1, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem('Pricing', 2, navItemStyle),
+                          _buildDesktopNavItem('මිලයන්', 2, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem('Partners', 3, navItemStyle),
+                          _buildDesktopNavItem('සහකරුවන්', 3, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem('Business', 4, navItemStyle),
+                          _buildDesktopNavItem('ව්‍යාපාර', 4, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem('About', 5, navItemStyle),
+                          _buildDesktopNavItem(
+                              'වැඩිදුර විස්තර', 5, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem('Contact', 6, navItemStyle),
+                          _buildDesktopNavItem('විමසීම්', 6, navItemStyle),
                           const SizedBox(width: 40),
                           Container(
                             decoration: BoxDecoration(
@@ -330,13 +332,13 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
 
   Widget _buildMobileMenu(TextStyle baseStyle, BuildContext context) {
     final labels = [
-      'Home',
-      'Features',
-      'Pricing',
-      'Partners',
-      'Business',
-      'About',
-      'Contact'
+      'ප්‍රධාන පිටුව',
+      'විශේෂාංග',
+      'මිලයන්',
+      'සහකරුවන්',
+      'ව්‍යාපාර',
+      'වැඩිදුර විස්තර',
+      'විමසීම්'
     ];
 
     return SafeArea(

@@ -192,19 +192,19 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                       const Spacer(),
                       Row(
                         children: [
-                          _buildDesktopNavItem('Home', 0, navItemStyle),
+                          _buildDesktopNavItem('முகப்பு', 0, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem('Features', 1, navItemStyle),
+                          _buildDesktopNavItem('அம்சங்கள்', 1, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem('Pricing', 2, navItemStyle),
+                          _buildDesktopNavItem('விலைகள்', 2, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem('Partners', 3, navItemStyle),
+                          _buildDesktopNavItem('கூட்டாளர்கள்', 3, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem('Business', 4, navItemStyle),
+                          _buildDesktopNavItem('வியாபாரம்', 4, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem('About', 5, navItemStyle),
+                          _buildDesktopNavItem('மேலும் தகவல்', 5, navItemStyle),
                           const SizedBox(width: 40),
-                          _buildDesktopNavItem('Contact', 6, navItemStyle),
+                          _buildDesktopNavItem('விசாரணைகள்', 6, navItemStyle),
                           const SizedBox(width: 40),
                           Container(
                             decoration: BoxDecoration(
@@ -330,13 +330,13 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
 
   Widget _buildMobileMenu(TextStyle baseStyle, BuildContext context) {
     final labels = [
-      'Home',
-      'Features',
-      'Pricing',
-      'Partners',
-      'Business',
-      'About',
-      'Contact'
+      'முகப்பு',
+      'அம்சங்கள்',
+      'விலைகள் ',
+      'கூட்டாளர்கள்',
+      'வியாபாரம்',
+      'மேலும் தகவல்',
+      'விசாரணைகள்'
     ];
 
     return SafeArea(
