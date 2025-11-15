@@ -1,0 +1,17 @@
+{
+  "builds": [
+    {
+      "src": "pubspec.yaml",
+      "use": "@vercel/flutter",
+      "config": {
+        "buildCommand": "flutter build web --base-href=/",
+        "outputDirectory": "build/web"
+      }
+    }
+  ],
+  "routes": [
+    { "handle": "filesystem" }, 
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
