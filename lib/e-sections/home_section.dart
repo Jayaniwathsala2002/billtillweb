@@ -1,6 +1,7 @@
 // lib/sections/home_section.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 
 class HomeSection extends StatefulWidget {
@@ -58,6 +59,17 @@ class _HomeSectionState extends State<HomeSection> {
     _slideTimer.cancel();
     _wordTimer.cancel();
     super.dispose();
+  }
+
+  Future<void> _openInvoiceGenerator() async {
+    final Uri url = Uri.parse('https://billtillweb.vercel.app/web/index.html');
+
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to open invoice generator.')),
+      );
+    }
   }
 
   @override
@@ -164,7 +176,8 @@ class _HomeSectionState extends State<HomeSection> {
                   SizedBox(
                     width: 280,
                     child: ElevatedButton(
-                      onPressed: widget.onInvoiceTap,
+                      onPressed:
+                          _openInvoiceGenerator, // ✅ Now opens invoice generator
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF0053C0),
                         foregroundColor: Colors.white,
@@ -190,7 +203,7 @@ class _HomeSectionState extends State<HomeSection> {
                     return AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
                       margin: const EdgeInsets.symmetric(horizontal: 6),
-                      width: index == _currentSlide ? 25 : 25,
+                      width: 25,
                       height: 5,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
@@ -199,7 +212,7 @@ class _HomeSectionState extends State<HomeSection> {
                           width: 1,
                         ),
                         color: index == _currentSlide
-                            ? const Color(0x4DFFFFFF) // 0.3 opacity for white
+                            ? Colors.white
                             : const Color(0xFF170069),
                       ),
                     );
