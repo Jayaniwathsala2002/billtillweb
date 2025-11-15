@@ -83,9 +83,18 @@ class _HomeSectionState extends State<HomeSection> {
             );
           }),
 
-          // Dark overlay
+          // Dark overlay with gradient as shadow
           Container(
-            color: const Color(0xFF0B0655).withAlpha((0.827 * 255).round()),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Color(0xCC170069), // 0.85 opacity for #170069
+                  Color(0xCC0053C0), // 0.85 opacity for #0053C0
+                ],
+              ),
+            ),
           ),
 
           // Content
@@ -109,8 +118,8 @@ class _HomeSectionState extends State<HomeSection> {
                       fontSize: isMobile ? 28 : 48,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      shadows: [
-                        const Shadow(
+                      shadows: const [
+                        Shadow(
                           offset: Offset(2.0, 2.0),
                           blurRadius: 3.0,
                           color: Colors.black,
@@ -124,7 +133,7 @@ class _HomeSectionState extends State<HomeSection> {
                       ),
                       TextSpan(
                         text: _words[_currentWord],
-                        style: const TextStyle(color: Color(0xFF43B9FE)),
+                        style: const TextStyle(color: Color(0xFF0053C0)),
                       ),
                     ],
                   ),
@@ -157,7 +166,7 @@ class _HomeSectionState extends State<HomeSection> {
                     child: ElevatedButton(
                       onPressed: widget.onInvoiceTap,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF43B9FE),
+                        backgroundColor: const Color(0xFF0053C0),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
@@ -178,9 +187,10 @@ class _HomeSectionState extends State<HomeSection> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(_images.length, (index) {
-                    return Container(
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
                       margin: const EdgeInsets.symmetric(horizontal: 6),
-                      width: 25,
+                      width: index == _currentSlide ? 25 : 25,
                       height: 5,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
@@ -189,8 +199,8 @@ class _HomeSectionState extends State<HomeSection> {
                           width: 1,
                         ),
                         color: index == _currentSlide
-                            ? const Color(0xFF43B9FE)
-                            : null,
+                            ? const Color(0x4DFFFFFF) // 0.3 opacity for white
+                            : const Color(0xFF170069),
                       ),
                     );
                   }),

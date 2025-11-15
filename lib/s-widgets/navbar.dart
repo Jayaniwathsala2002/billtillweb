@@ -49,7 +49,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
   }
 
   Future<void> _openInvoiceGenerator() async {
-    final Uri url = Uri.parse('/web/invoice.html');
+    final Uri url = Uri.parse('web/web/index.html');
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -95,7 +95,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF0B0655), // Match navbar color
+          backgroundColor: const Color(0xFF0053C0), // Changed to #0053C0
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
           ),
@@ -115,7 +115,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
               child: Text(
                 'Cancel',
                 style: GoogleFonts.poppins(
-                    color: const Color(0xFF43B9FE)), // Match button color
+                    color: Colors.white), // Changed to white
               ),
             ),
             TextButton(
@@ -125,7 +125,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
               child: Text(
                 'OK',
                 style: GoogleFonts.poppins(
-                    color: const Color(0xFF43B9FE)), // Match button color
+                    color: Colors.white), // Changed to white
               ),
             ),
           ],
@@ -163,8 +163,12 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          decoration: BoxDecoration(
-            color: const Color(0xFF0B0655).withAlpha((0.827 * 255).round()),
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [Color(0xFF170069), Color(0xFF0053C0)],
+            ),
           ),
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1400),
@@ -201,22 +205,33 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                           const SizedBox(width: 40),
                           _buildDesktopNavItem('Contact', 6, navItemStyle),
                           const SizedBox(width: 40),
-                          ElevatedButton(
-                            onPressed: _openInvoiceGenerator,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF43B9FE),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Color(0xFF170069), Color(0xFF0053C0)],
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 14,
-                              ),
-                              elevation: 0,
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Text('FREE INVOICE GENERATOR',
-                                style: buttonTextStyle),
+                            child: ElevatedButton(
+                              onPressed: _openInvoiceGenerator,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 14,
+                                ),
+                                elevation: 0,
+                                shadowColor: Colors.transparent,
+                              ),
+                              child: Text('FREE INVOICE GENERATOR',
+                                  style: buttonTextStyle),
+                            ),
                           ),
                           const SizedBox(width: 16),
                           // Language selector icon (desktop)
@@ -287,7 +302,13 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                 width: MediaQuery.of(context).size.width * 0.5,
                 constraints: const BoxConstraints(maxWidth: 300),
                 height: MediaQuery.of(context).size.height,
-                color: const Color(0xFF0B0655),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Color(0xFF170069), Color(0xFF0053C0)],
+                  ),
+                ),
                 child: _buildMobileMenu(navItemStyle, context),
               ),
             ),

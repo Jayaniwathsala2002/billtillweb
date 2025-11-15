@@ -145,7 +145,7 @@ class HomePageState extends State<HomePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('✅ Language changed to:\n$displayName'),
-        backgroundColor: const Color(0xFF0B0655),
+        backgroundColor: const Color(0xFF0053C0),
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
