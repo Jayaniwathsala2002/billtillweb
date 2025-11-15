@@ -195,7 +195,7 @@ class _HomeSectionState extends State<HomeSection> {
                     ),
                   ),
                 ],
-                const SizedBox(height: 100),
+                const SizedBox(height: 90),
                 // Carousel Indicators
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
