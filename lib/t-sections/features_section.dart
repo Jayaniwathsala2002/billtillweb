@@ -38,34 +38,34 @@ class FeaturesSection extends StatelessWidget {
             runAlignment: WrapAlignment.center,
             spacing: isMobile ? 12 : 24,
             runSpacing: isMobile ? 30 : 40,
-            children: [
+            children: const [
               _FeatureCard(
                 title: 'விலைபேச்சு புள்ளி (POS)',
                 description:
-                    'வீகமான, உணர்வுப்பூர்வமான செக் அவுட், ரசீது அச்சிடுதல் மற்றும் நேரடி செலுத்தல் கண்காணிப்பு.',
+                    'வேகமான, உணர்வுப்பூர்வமான செக் அவுட், ரசீது அச்சிடுதல் மற்றும் நேரடி செலுத்தல் கண்காணிப்பு.',
                 icon: Icons.point_of_sale_outlined,
-                isMobile: isMobile,
+                isMobile: false,
               ),
               _FeatureCard(
                 title: 'பொருட்களின் நிர்வாகம்',
                 description:
                     'பங்கு நிலைகளை கண்காணிக்கவும், குறைந்த பங்கு எச்சரிக்கைகளை பெறவும், சில வினாடிகளுக்குள் பார்கோட்களை ஸ்கேன் செய்யவும்.',
                 icon: Icons.inventory_2_outlined,
-                isMobile: isMobile,
+                isMobile: false,
               ),
               _FeatureCard(
                 title: 'வணிக அறிக்கை',
                 description:
                     'விற்பனை, லாபம் மற்றும் வரி அறிக்கைகளைக் உருவாக்குதல். உடனடியாக PDF அல்லது எக்செல் வடிவத்தில் ஏற்றுமதி செய்யவும்.',
                 icon: Icons.bar_chart_outlined,
-                isMobile: isMobile,
+                isMobile: false,
               ),
               _FeatureCard(
                 title: 'தரவு பாதுகாப்பு',
                 description:
                     'வங்கி நிலை குறியாக்கம், வேடப் பாவனை அடிப்படையிலான அணுகல், மற்றும் தானாகக் கிளவுட் காப்புப்பெருக்கல்கள்.',
                 icon: Icons.lock_outlined,
-                isMobile: isMobile,
+                isMobile: false,
               ),
             ],
           ),
@@ -81,7 +81,7 @@ class FeaturesSection extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'சில்லறை கடைகளிலிருந்தும் கார் வாடகை சேவைகள் வரை – பில் டில் உங்கள் தேவைகளுக்கு ஏற்ப ஒருங்கிணைகிறார்.',
+            'சில்லறை கடைகளிலிருந்து கார் வாடகை சேவைகள் வரை – பில் டில் உங்கள் தேவைகளுக்கு ஏற்ப ஒருங்கினைக்கிறது.',
             style: GoogleFonts.poppins(
               fontSize: isMobile ? 14 : 16,
               color: const Color(0xFF555555),
@@ -94,7 +94,7 @@ class FeaturesSection extends StatelessWidget {
             runAlignment: WrapAlignment.center,
             spacing: isMobile ? 12 : 24,
             runSpacing: isMobile ? 24 : 30,
-            children: [
+            children: const [
               _IndustryCard(
                 name: 'ரீட்டெயில் தீர்வுகள்',
                 image: 'assets/images/product/Product1.jpeg',
@@ -139,8 +139,10 @@ class _FeatureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool actualIsMobile = MediaQuery.of(context).size.width < 600;
+
     return SizedBox(
-      width: isMobile ? 260 : 280,
+      width: actualIsMobile ? 260 : 280,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -162,7 +164,7 @@ class _FeatureCard extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: isMobile ? 15 : 16,
+              fontSize: actualIsMobile ? 15 : 16,
               fontWeight: FontWeight.w600,
               color: const Color(0xFF170069),
             ),
@@ -172,7 +174,7 @@ class _FeatureCard extends StatelessWidget {
             description,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: isMobile ? 12 : 13,
+              fontSize: actualIsMobile ? 12 : 13,
               color: const Color(0xFF555555),
               height: 1.4,
             ),
