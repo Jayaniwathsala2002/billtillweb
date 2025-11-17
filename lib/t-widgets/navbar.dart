@@ -144,26 +144,32 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     final navItemStyle = GoogleFonts.poppins(
       color: Colors.white,
-      fontSize: 16,
+      fontSize: _getNavItemFontSize(screenWidth),
       fontWeight: FontWeight.w500,
     );
 
     final buttonTextStyle = GoogleFonts.poppins(
       color: Colors.white,
-      fontSize: 16,
+      fontSize: _getButtonFontSize(screenWidth),
       fontWeight: FontWeight.bold,
     );
 
-    final bool isMobile = MediaQuery.of(context).size.width < 992;
+    final bool isMobile = screenWidth < 992;
+    final bool isTablet = screenWidth >= 992 && screenWidth < 1200;
 
     return Stack(
       children: [
         // Full-width navbar background
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding: EdgeInsets.symmetric(
+            horizontal: _getHorizontalPadding(screenWidth),
+            vertical: 16,
+          ),
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
@@ -175,8 +181,8 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
             constraints: const BoxConstraints(maxWidth: 1400),
             child: LayoutBuilder(
               builder: (context, constraints) {
-                if (constraints.maxWidth >= 992) {
-                  // Desktop layout
+                if (!isMobile) {
+                  // Desktop/Tablet layout
                   return Row(
                     children: [
                       GestureDetector(
@@ -185,73 +191,15 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                         },
                         child: Image.asset(
                           'assets/images/hero/logo.png',
-                          height: 60,
+                          height: _getLogoHeight(screenWidth),
                           fit: BoxFit.contain,
                         ),
                       ),
                       const Spacer(),
-                      Row(
-                        children: [
-                          _buildDesktopNavItem('முகப்பு', 0, navItemStyle),
-                          const SizedBox(width: 40),
-                          _buildDesktopNavItem('அம்சங்கள்', 1, navItemStyle),
-                          const SizedBox(width: 40),
-                          _buildDesktopNavItem('விலைகள்', 2, navItemStyle),
-                          const SizedBox(width: 40),
-                          _buildDesktopNavItem('கூட்டாளர்கள்', 3, navItemStyle),
-                          const SizedBox(width: 40),
-                          _buildDesktopNavItem('வியாபாரம்', 4, navItemStyle),
-                          const SizedBox(width: 40),
-                          _buildDesktopNavItem('மேலும் தகவல்', 5, navItemStyle),
-                          const SizedBox(width: 40),
-                          _buildDesktopNavItem('விசாரணைகள்', 6, navItemStyle),
-                          const SizedBox(width: 40),
-                          Container(
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [Color(0xFF170069), Color(0xFF0053C0)],
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: ElevatedButton(
-                              onPressed: _openInvoiceGenerator,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                foregroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 14,
-                                ),
-                                elevation: 0,
-                                shadowColor: Colors.transparent,
-                              ),
-                              child: Text('விலைப்பட்டியல் பெறுதல்',
-                                  style: buttonTextStyle),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          // Language selector icon (desktop)
-                          PopupMenuButton<String>(
-                            icon: const Icon(Icons.language,
-                                color: Colors.white, size: 24),
-                            onSelected:
-                                _confirmLanguageChange, // Use the confirmation function
-                            itemBuilder: (context) => const [
-                              PopupMenuItem(
-                                  value: 'English', child: Text('English')),
-                              PopupMenuItem(
-                                  value: 'Sinhala', child: Text('සිංහල')),
-                              PopupMenuItem(
-                                  value: 'Tamil', child: Text('தமிழ்')),
-                            ],
-                          ),
-                        ],
-                      ),
+                      if (isTablet)
+                        _buildTabletNavBar(navItemStyle, buttonTextStyle)
+                      else
+                        _buildDesktopNavBar(navItemStyle, buttonTextStyle),
                     ],
                   );
                 } else {
@@ -318,6 +266,142 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
     );
   }
 
+  Widget _buildDesktopNavBar(
+      TextStyle navItemStyle, TextStyle buttonTextStyle) {
+    return Row(
+      children: [
+        _buildDesktopNavItem('முகப்பு', 0, navItemStyle),
+        const SizedBox(width: 32),
+        _buildDesktopNavItem('அம்சங்கள்', 1, navItemStyle),
+        const SizedBox(width: 32),
+        _buildDesktopNavItem('விலைகள்', 2, navItemStyle),
+        const SizedBox(width: 32),
+        _buildDesktopNavItem('கூட்டாளர்கள்', 3, navItemStyle),
+        const SizedBox(width: 32),
+        _buildDesktopNavItem('வியாபாரம்', 4, navItemStyle),
+        const SizedBox(width: 32),
+        _buildDesktopNavItem('மேலும் தகவல்', 5, navItemStyle),
+        const SizedBox(width: 32),
+        _buildDesktopNavItem('விசாரணைகள்', 6, navItemStyle),
+        const SizedBox(width: 32),
+        Container(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [Color(0xFF170069), Color(0xFF0053C0)],
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ElevatedButton(
+            onPressed: _openInvoiceGenerator,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 14,
+              ),
+              elevation: 0,
+              shadowColor: Colors.transparent,
+            ),
+            child: Text('விலைப்பட்டியல் பெறுதல்', style: buttonTextStyle),
+          ),
+        ),
+        const SizedBox(width: 16),
+        // Language selector icon (desktop)
+        PopupMenuButton<String>(
+          icon: const Icon(Icons.language, color: Colors.white, size: 24),
+          onSelected: _confirmLanguageChange,
+          itemBuilder: (context) => const [
+            PopupMenuItem(value: 'English', child: Text('English')),
+            PopupMenuItem(value: 'Sinhala', child: Text('සිංහල')),
+            PopupMenuItem(value: 'Tamil', child: Text('தமிழ்')),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTabletNavBar(TextStyle navItemStyle, TextStyle buttonTextStyle) {
+    return Row(
+      children: [
+        // Reduced spacing for tablet
+        _buildDesktopNavItem('முகப்பு', 0, navItemStyle),
+        const SizedBox(width: 20),
+        _buildDesktopNavItem('அம்சங்கள்', 1, navItemStyle),
+        const SizedBox(width: 20),
+        _buildDesktopNavItem('விலைகள்', 2, navItemStyle),
+        const SizedBox(width: 20),
+        _buildDesktopNavItem('கூட்டாளர்கள்', 3, navItemStyle),
+        const SizedBox(width: 20),
+
+        // More important items remain visible
+        PopupMenuButton<String>(
+          icon: const Icon(Icons.more_vert, color: Colors.white, size: 24),
+          itemBuilder: (context) => [
+            const PopupMenuItem(value: 'வியாபாரம்', child: Text('வியாபாரம்')),
+            const PopupMenuItem(
+                value: 'மேலும் தகவல்', child: Text('மேலும் தகவல்')),
+            const PopupMenuItem(value: 'விசாரணைகள்', child: Text('விசாரணைகள்')),
+          ],
+          onSelected: (value) {
+            // Handle the selected menu item
+            final index =
+                ['வியாபாரம்', 'மேலும் தகவல்', 'விசாரணைகள்'].indexOf(value);
+            if (index != -1) {
+              _handleNavTap(index + 4); // Adjust index accordingly
+            }
+          },
+        ),
+        const SizedBox(width: 16),
+
+        Container(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [Color(0xFF170069), Color(0xFF0053C0)],
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ElevatedButton(
+            onPressed: _openInvoiceGenerator,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              elevation: 0,
+              shadowColor: Colors.transparent,
+            ),
+            child: Text('விலைப்பட்டியல்', style: buttonTextStyle),
+          ),
+        ),
+        const SizedBox(width: 12),
+
+        // Language selector icon (tablet)
+        PopupMenuButton<String>(
+          icon: const Icon(Icons.language, color: Colors.white, size: 22),
+          onSelected: _confirmLanguageChange,
+          itemBuilder: (context) => const [
+            PopupMenuItem(value: 'English', child: Text('English')),
+            PopupMenuItem(value: 'Sinhala', child: Text('සිංහල')),
+            PopupMenuItem(value: 'Tamil', child: Text('தமிழ்')),
+          ],
+        ),
+      ],
+    );
+  }
+
   Widget _buildDesktopNavItem(String label, int index, TextStyle style) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -345,7 +429,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ✅ Language icon on FAR LEFT, Close on FAR RIGHT
+            // Language icon on FAR LEFT, Close on FAR RIGHT
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -354,8 +438,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                       const Icon(Icons.language, color: Colors.white, size: 24),
                   onSelected: (String value) {
                     _toggleMenu();
-                    _confirmLanguageChange(
-                        value); // Use the confirmation function
+                    _confirmLanguageChange(value);
                   },
                   itemBuilder: (context) => const [
                     PopupMenuItem(value: 'English', child: Text('English')),
@@ -398,5 +481,30 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+
+  // Helper methods for responsive design
+  double _getNavItemFontSize(double screenWidth) {
+    if (screenWidth < 992) return 16;
+    if (screenWidth < 1200) return 14; // Smaller font for tablets
+    return 16; // Normal font for large screens
+  }
+
+  double _getButtonFontSize(double screenWidth) {
+    if (screenWidth < 992) return 16;
+    if (screenWidth < 1200) return 13; // Smaller font for tablets
+    return 16; // Normal font for large screens
+  }
+
+  double _getHorizontalPadding(double screenWidth) {
+    if (screenWidth < 768) return 16;
+    if (screenWidth < 1200) return 20; // Less padding for tablets
+    return 20; // Normal padding for large screens
+  }
+
+  double _getLogoHeight(double screenWidth) {
+    if (screenWidth < 992) return 50;
+    if (screenWidth < 1200) return 55; // Slightly smaller for tablets
+    return 60; // Normal size for large screens
   }
 }
