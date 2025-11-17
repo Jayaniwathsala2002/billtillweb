@@ -1,4 +1,3 @@
-// lib/sections/features_section.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,7 +17,7 @@ class FeaturesSection extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 42,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF0B0655),
+              color: const Color(0xFF170069),
             ),
             textAlign: TextAlign.center,
           ),
@@ -70,7 +69,7 @@ class FeaturesSection extends StatelessWidget {
             style: GoogleFonts.poppins(
               fontSize: 42,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF0B0655),
+              color: const Color(0xFF170069),
             ),
             textAlign: TextAlign.center,
           ),
@@ -145,7 +144,7 @@ class _FeatureCard extends StatelessWidget {
             child: Icon(
               icon,
               size: 28,
-              color: const Color(0xFF0B0655),
+              color: const Color(0xFF170069),
             ),
           ),
           const SizedBox(height: 16),
@@ -155,7 +154,7 @@ class _FeatureCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF0B0655),
+              color: Color(0xFF170069),
             ),
           ),
           const SizedBox(height: 8),
