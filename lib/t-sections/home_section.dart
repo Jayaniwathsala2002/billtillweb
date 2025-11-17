@@ -176,7 +176,7 @@ class _HomeSectionState extends State<HomeSection> {
                         borderRadius: BorderRadius.circular(8)),
                   ),
                   child: Text(
-                    'View Pricing',
+                    'விலைகளை காண்க',
                     style: GoogleFonts.poppins(
                       fontSize: isMobile ? 16 : 18,
                       fontWeight: FontWeight.bold,
