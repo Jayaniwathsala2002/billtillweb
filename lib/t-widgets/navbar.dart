@@ -230,7 +230,7 @@ class _NavbarState extends State<Navbar> with TickerProviderStateMixin {
                                 elevation: 0,
                                 shadowColor: Colors.transparent,
                               ),
-                              child: Text('FREE INVOICE GENERATOR',
+                              child: Text('விலைப்பட்டியல் பெறுதல்',
                                   style: buttonTextStyle),
                             ),
                           ),

@@ -1,4 +1,3 @@
-// lib/sections/home_section.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,7 +6,7 @@ import 'dart:async';
 class HomeSection extends StatefulWidget {
   final bool isMobile;
   final VoidCallback onInvoiceTap;
-  final VoidCallback onViewPricingTap; // ✅ This will scroll to Pricing
+  final VoidCallback onViewPricingTap;
 
   const HomeSection({
     Key? key,
@@ -27,7 +26,11 @@ class _HomeSectionState extends State<HomeSection> {
     'assets/images/hero/hero3.jpeg',
   ];
 
-  final List<String> _words = ['RETAIL', 'RESTAURANT', 'RENT-A-CAR'];
+  final List<String> _words = [
+    'விற்பனைக் கடைகளுக்கு',
+    'உணவகங்களுக்கு',
+    'வாகன வாடகைக்கு'
+  ];
   int _currentSlide = 0;
   int _currentWord = 0;
 
@@ -77,6 +80,8 @@ class _HomeSectionState extends State<HomeSection> {
     final double height = MediaQuery.of(context).size.height;
     final bool isMobile = widget.isMobile;
 
+    double textContainerHeight = isMobile ? 180.0 : 120.0;
+
     return SizedBox(
       height: height,
       child: Stack(
@@ -124,36 +129,43 @@ class _HomeSectionState extends State<HomeSection> {
                   ? CrossAxisAlignment.center
                   : CrossAxisAlignment.start,
               children: [
-                Text.rich(
-                  TextSpan(
-                    style: GoogleFonts.poppins(
-                      fontSize: isMobile ? 28 : 48,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      shadows: const [
-                        Shadow(
-                          offset: Offset(2.0, 2.0),
-                          blurRadius: 3.0,
-                          color: Colors.black,
-                        ),
-                      ],
-                    ),
-                    children: [
-                      const TextSpan(
-                        text: 'REIMAGINED POS FOR\n',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                SizedBox(
+                  height: textContainerHeight,
+                  child: Container(
+                    alignment:
+                        isMobile ? Alignment.center : Alignment.centerLeft,
+                    child: Text.rich(
                       TextSpan(
-                        text: _words[_currentWord],
-                        style: const TextStyle(color: Color(0xFF0053C0)),
+                        style: GoogleFonts.poppins(
+                          fontSize: isMobile ? 28 : 38,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          shadows: const [
+                            Shadow(
+                              offset: Offset(2.0, 2.0),
+                              blurRadius: 3.0,
+                              color: Colors.black,
+                            ),
+                          ],
+                        ),
+                        children: [
+                          const TextSpan(
+                            text: 'மறுவடிவமைப்பு செய்யப்பட்ட POS\n',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          TextSpan(
+                            text: _words[_currentWord],
+                            style: const TextStyle(color: Color(0xFF0053C0)),
+                          ),
+                        ],
                       ),
-                    ],
+                      textAlign: isMobile ? TextAlign.center : TextAlign.left,
+                    ),
                   ),
-                  textAlign: isMobile ? TextAlign.center : TextAlign.left,
                 ),
                 const SizedBox(height: 50),
                 ElevatedButton(
-                  onPressed: widget.onViewPricingTap, // ✅ Scrolls to Pricing
+                  onPressed: widget.onViewPricingTap,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     foregroundColor: Colors.white,
@@ -176,8 +188,7 @@ class _HomeSectionState extends State<HomeSection> {
                   SizedBox(
                     width: 280,
                     child: ElevatedButton(
-                      onPressed:
-                          _openInvoiceGenerator, // ✅ Now opens invoice generator
+                      onPressed: _openInvoiceGenerator,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF0053C0),
                         foregroundColor: Colors.white,
@@ -186,7 +197,7 @@ class _HomeSectionState extends State<HomeSection> {
                             borderRadius: BorderRadius.circular(8)),
                       ),
                       child: Text(
-                        'FREE INVOICE GENERATOR',
+                        'விலைப்பட்டியல் பெறுதல்',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -195,7 +206,7 @@ class _HomeSectionState extends State<HomeSection> {
                     ),
                   ),
                 ],
-                const SizedBox(height: 80),
+                const SizedBox(height: 70),
                 // Carousel Indicators
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

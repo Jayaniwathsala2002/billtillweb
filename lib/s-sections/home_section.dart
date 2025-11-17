@@ -28,7 +28,7 @@ class _HomeSectionState extends State<HomeSection> {
   ];
 
   final List<String> _words = [
-    'වෙලෙඳසැල් සඳහා',
+    'වෙළඳසැල් සඳහා',
     'රෙස්ටූරන්ට් සඳහා',
     'කුලීරථ සේවා සඳහා​'
   ];
@@ -190,7 +190,7 @@ class _HomeSectionState extends State<HomeSection> {
                             borderRadius: BorderRadius.circular(8)),
                       ),
                       child: Text(
-                        'FREE INVOICE GENERATOR',
+                        'ඉන්වොයිස් පත්‍රයක් ලබාගැනීම​',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
